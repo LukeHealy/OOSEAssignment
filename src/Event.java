@@ -11,7 +11,6 @@ public class Event
     private Eventful eventBehaviour;
     private String propertyName;
     private Property property;
-    private Company primaryCompany = null;
 
     public Event(int year, String propertyName, Eventful eventBehaviour)
     {
@@ -34,14 +33,6 @@ public class Event
     public void doEvent()
     {
         eventBehaviour.doEvent();
-    }
-
-    public void registerPrimaryCompany(Company primaryCompany)
-    {
-        if(this.primaryCompany == null)
-        {
-            this.primaryCompany = primaryCompany;
-        }
     }
 
     public String toString()

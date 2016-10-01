@@ -1,3 +1,11 @@
+/***
+ * NAME:    BuyTransaction
+ * PURPOSE: Contains the transaction behaviour for buying a property.
+            Used by a Plan.
+ * AUTHOR:  Luke Healy
+ * DATE:    1/10/16
+ */
+
 public class BuyTransaction implements Transaction
 {
     public BuyTransaction(){}

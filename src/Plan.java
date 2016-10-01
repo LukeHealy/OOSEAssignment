@@ -49,6 +49,16 @@ public class Plan
         }
     }
 
+    public void mapProperty(Property property)
+    {
+        this.property = property;
+    }
+
+    public String getPropertyName()
+    {
+        return propertyName;
+    }
+
     public String toString()
     {
         return ("Plan: " + transactionBehaviour + ", " + propertyName);

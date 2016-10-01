@@ -76,16 +76,16 @@ public class EventFileParser implements Parser
 
             event = new Event(year, property);
 
-            // Get event type and define evenbehaviour.
+            // Get event type and define event behaviour.
             if(!parts[1].equals(""))
             {
-                /*switch(parts[1])
+                switch(parts[1])
                 {
                     case "W-":
-                        event.setEventBehaviour(new WagesUpEvent());
+                        event.setEventBehaviour(new WageUpEvent());
                         break;
                     case "W+":
-                        event.setEventBehaviour(new WagesDownEvent());
+                        event.setEventBehaviour(new WageDownEvent());
                         break;
                     case "V+":
                         event.setEventBehaviour(new ValueUpEvent());
@@ -102,7 +102,7 @@ public class EventFileParser implements Parser
                     default:
                         throw new InvalidFileException("An event has an invalid type.");
                         break;
-                }*/
+                }
             }
             else
             {

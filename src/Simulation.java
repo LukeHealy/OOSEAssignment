@@ -94,7 +94,7 @@ public class Simulation implements Subject
                 file.remove(0);
                 parser.populate(parser.parseFile(file), fileData);
 
-                //setPrimaryCompany(propFile);
+                //setPrimaryCompany();
                 for(Object p : fileData[i])
                 {
                     System.out.println(p.toString());
@@ -111,6 +111,11 @@ public class Simulation implements Subject
     /**
      * Observers for wage changes.
      */
+    public void setWage(double wages)
+    {
+        this.wages = wages;
+        notifyObservers();
+    }
     public void attach(Observer observer)
     {
         this.observers.add(observer);
