@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface Parser
 {
-    public ArrayList parseFile(ArrayList<String> propertyString) throws InvalidFileException;
-    public void populate(ArrayList toPopulate, ArrayList[] attributes);
+    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException;
 }

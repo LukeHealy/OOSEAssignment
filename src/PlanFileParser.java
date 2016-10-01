@@ -15,7 +15,7 @@ import java.util.List;
 public class PlanFileParser implements Parser
 {
     @Override
-    public ArrayList<Plan> parseFile(ArrayList<String> planfile) throws InvalidFileException
+    public void parseFile(ArrayList<String> planfile, FileData fileData) throws InvalidFileException
     {
         int year;
         int previousYear = 0;
@@ -96,13 +96,7 @@ public class PlanFileParser implements Parser
                     "Plan File: An plan is missing a type.");
             }
         }
-        return plans;
-    }
-
-    @Override
-    public void populate(ArrayList toPopulate, ArrayList[] attributes)
-    {
-        attributes[2] = toPopulate;
+        fileData.plans = plans;
     }
 }
 

@@ -7,14 +7,14 @@
  */
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class PropertyFileParser implements Parser
 {
     @Override
-    public ArrayList<Property> parseFile(ArrayList<String> propertyString) throws InvalidFileException
+    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException
     {
-        ArrayList<Property> properties = new ArrayList<Property>();
+        HashMap<String,Property> properties = new HashMap<String,Property>();
 
         String ownerName;
         String name;
@@ -61,7 +61,7 @@ public class PropertyFileParser implements Parser
             // to the business unit and add it.
             if(parts[1].equals("C"))
             {
-                properties.add(new Company(ownerName, name, monetaryValue));
+                properties.put(name, new Company(ownerName, name, monetaryValue));
             }
             else if(parts[1].equals("B"))
             {
@@ -86,7 +86,7 @@ public class PropertyFileParser implements Parser
                     throw new InvalidFileException(
                         "Property file: A Business Unit is missing wages.");
                 }
-                properties.add(new BusinessUnit(ownerName, name, monetaryValue, wages, revenue));
+                properties.put(name, new BusinessUnit(ownerName, name, monetaryValue, wages, revenue));
             }
             else
             {
@@ -94,19 +94,7 @@ public class PropertyFileParser implements Parser
                     "Property file: '" + parts[1] + "' is not a valid type. Use 'C' or 'B'.");
             }
         }
-        return properties;
-    }
-
-    /**
-     * The property populate method resided here so that it is bound the the 
-     * property parser, meaning only one factory decision has to be made.
-     * The Simulation passes it's array of lists of file data and the property
-     * data is in index 0 so just copy the arraylist of data in.
-     */
-    @Override
-    public void populate(ArrayList toPopulate, ArrayList[] attributes)
-    {
-        attributes[0] = toPopulate;
+        fileData.properties = properties;
     }
 }
 

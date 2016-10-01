@@ -36,6 +36,16 @@ public class BusinessUnit extends Property implements Observer
         return this.name;
     }
 
+    public double getRevenue()
+    {
+        return revenue;
+    }
+
+    public void setRevenue(double revenue)
+    {
+        this.revenue = revenue;
+    }
+
     // For debugging.
     @Override
     public String toString()

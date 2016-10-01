@@ -4,7 +4,7 @@ import java.util.List;
 public class EventFileParser implements Parser
 {
     @Override
-    public ArrayList<Event> parseFile(ArrayList<String> eventFile) throws InvalidFileException
+    public void parseFile(ArrayList<String> eventFile, FileData fileDate) throws InvalidFileException
     {   
         int year;
         int previousYear = 0;
@@ -94,7 +94,7 @@ public class EventFileParser implements Parser
                         event.setEventBehaviour(new ValueDownEvent());
                         break;
                     case "R-":
-                        event.setEventBehaviour(new RevenueUpEvent());
+                        event.setEventBehaviour(new RevenueUpEvent(property));
                         break;
                     case "R+":
                         event.setEventBehaviour(new RevenueDownEvent());
@@ -110,15 +110,6 @@ public class EventFileParser implements Parser
             }
             events.add(event);
         }
-        return events;
-    }
-
-    /**
-     * See populate in PropertyFileParser for rationale.
-     */
-    @Override
-    public void populate(ArrayList toPopulate, ArrayList[] attributes)
-    {
-        attributes[1] = toPopulate;
+        fileDate.events = events;
     }
 }

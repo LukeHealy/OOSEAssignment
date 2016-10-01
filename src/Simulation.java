@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 
 public class Simulation implements Subject
 {
+
     private int startYear;
     private int endYear;
     private Company primaryCompany;
@@ -23,17 +24,25 @@ public class Simulation implements Subject
      */
     private static Simulation sim = null;
 
-    /* Array of 3 ArrayLists, properties, plans and events.
+    /* Container of 3 containers, properties, plans and events.
      * They hold all the data read from the input files.
-     * An array was used over explicit fields so that the parser
+     * A container was used so that the parser
      * nominated by the factory is able to handle writing to any of
-     * the ArrayLists. Otherwise Simulation would have to know what 
-     * type of file it's reading and pass the appropriate list, defeating
-     * the purpose of the parser factory. This inherantly solves the issue
+     * the file data containers. Otherwise Simulation would have to know what 
+     * type of file it's reading and pass the appropriate container, defeating
+     * the purpose of the parser factory. 
+     * Also, This inherantly solves the issue
      * of not knowing which command line argument is which file because
      * we don't care! The parser knows what to do.
      */
-    private ArrayList[] fileData;
+    private FileData fileData;
+
+    /*
+     * Store hashmap of properties, even though there is already an arraylist.
+     * This is so that proprty names can easily be matched with properties
+     * for use thorughout the program.
+     */
+    private HashMap<String,Property> properties;
 
     public Simulation()
     {
@@ -42,13 +51,25 @@ public class Simulation implements Subject
         primaryCompany = null;
 
         // Init the ArrayLists.
-        fileData = new ArrayList[3];
-        fileData[0] = new ArrayList<Property>();
-        fileData[1] = new ArrayList<Plan>();
-        fileData[2] = new ArrayList<Event>();
+        fileData = new FileData();
 
         observers = new ArrayList<Observer>();
         sim = this;
+    }
+
+    public Property resolveProperty(String propertyName)
+    {
+        return fileData.properties.get(propertyName);
+    }
+
+    public BusinessUnit resolveBusinessUnit(String propertyName)
+    {
+        BusinessUnit requested;
+        if(fileData.properties.get(propertyName) instanceof BusinessUnit)
+        {
+            requested = fileData.properties.get(propertyName);
+        }
+        return requested;
     }
 
     /**
@@ -92,14 +113,9 @@ public class Simulation implements Subject
                 parser = FileIO.makeParser(file.get(0));
                 // We can get rid of the header now.
                 file.remove(0);
-                parser.populate(parser.parseFile(file), fileData);
-
-                //setPrimaryCompany();
-                for(Object p : fileData[i])
-                {
-                    System.out.println(p.toString());
-                }
+                parser.parseFile(file, fileData);
             }
+
         }
         catch(FileNotFoundException | InvalidFileException e)
         {
