@@ -2,16 +2,18 @@
  * NAME:    Plan
  * PURPOSE: Used to store a step of the plan. i.e a line of the plan file.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
-public abstract class Plan
+public class Plan
 {
     /*
      * Keep references to the primary company and the relevant property
      * so that they can be modified by this plan.
      */
     private Company primaryCompany = null;
+    private String propertyName;
+    // Defined as the plan is executed.
     private Property property;
 
     /*
@@ -21,17 +23,12 @@ public abstract class Plan
      */
     private Transaction transactionBehaviour;
 
-    public Plan(Property property, Transaction transactionBehaviour)
+    public Plan(String propertyName, Transaction transactionBehaviour)
     {
-        this.property = property;
+        this.propertyName = propertyName;
         this.transactionBehaviour = transactionBehaviour;
-
     }
 
-    public void setPrimaryCompany(Company primaryCompany)
-    {
-        this.primaryCompany = primaryCompany;
-    }
     // May never be used.
     public void setTransactionBehaviour(Transaction transactionBehaviour)
     {
@@ -44,13 +41,17 @@ public abstract class Plan
         transactionBehaviour.transact(primaryCompany, property);
     }
 
-
-    public registerPrimaryCompany(Company primary)
+    public void registerPrimaryCompany(Company primary)
     {
         if(this.primaryCompany == null)
         {
             this.primaryCompany = primary;
         }
+    }
+
+    public String toString()
+    {
+        return ("Plan: " + transactionBehaviour + ", " + propertyName);
     }
 
 }

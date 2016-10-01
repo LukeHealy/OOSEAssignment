@@ -2,7 +2,7 @@
  * NAME:    BankAccount
  * PURPOSE: Stores a companies bank account. monetaryValue is the balance.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
 public class BankAccount extends Property
@@ -11,7 +11,6 @@ public class BankAccount extends Property
     public BankAccount(String ownerName, double monetaryValue)
     {
         super(ownerName, monetaryValue);
-
     }
 
     @Override
@@ -26,7 +25,7 @@ public class BankAccount extends Property
      */
     public void addToBalance(double amount)
     {
-        monetaryValue += amount;
+        monetaryValue+= amount;
     }
 
     public double getBalance()

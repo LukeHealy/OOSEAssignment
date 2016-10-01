@@ -1,9 +1,9 @@
 /***
  * NAME:    PropertyFileParser
- * PURPOSE: To parse and validate the property file. Also houses the a 
+ * PURPOSE: To parse and validate the property file. Also houses a 
  *          version of the populate method.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class PropertyFileParser implements Parser
         
         for(String ps : propertyString)
         {
-            String[] parts = ps.split(",");
+            String[] parts = ps.split(",", -1);
 
             // Add name. If empty throw exception.
             if(!parts[0].equals(""))
@@ -91,7 +91,7 @@ public class PropertyFileParser implements Parser
             else
             {
                 throw new InvalidFileException(
-                    "Property file: " + parts[1] + " is not a valid type. Use 'C' or 'B'.");
+                    "Property file: '" + parts[1] + "' is not a valid type. Use 'C' or 'B'.");
             }
         }
         return properties;

@@ -2,7 +2,7 @@
  * NAME:    Company
  * PURPOSE: Stores a company and it's required functionality and information.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
 import java.util.HashSet;

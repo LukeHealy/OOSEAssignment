@@ -2,17 +2,26 @@
  * NAME:    Simulation
  * PURPOSE: Contains logic and necessary information regarding the simulation.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
 import java.util.*;
 import java.io.FileNotFoundException;
 
-public class Simulation
+public class Simulation implements Subject
 {
     private int startYear;
     private int endYear;
     private Company primaryCompany;
+    private List<Observer> observers;
+    private double wages;
+
+    /*
+     * Hold a static reference to the instance. NOTE: this is not a singleton.
+     * This reference is overwitten with the new instance when one is constructed.
+     * It is needed so that observers can get the instance of the subject.
+     */
+    private static Simulation sim = null;
 
     /* Array of 3 ArrayLists, properties, plans and events.
      * They hold all the data read from the input files.
@@ -35,8 +44,11 @@ public class Simulation
         // Init the ArrayLists.
         fileData = new ArrayList[3];
         fileData[0] = new ArrayList<Property>();
-        // fileData[1] = new ArrayList<Plan>();
-        // fileData[2] = new ArrayList<Event>();
+        fileData[1] = new ArrayList<Plan>();
+        fileData[2] = new ArrayList<Event>();
+
+        observers = new ArrayList<Observer>();
+        sim = this;
     }
 
     /**
@@ -46,6 +58,17 @@ public class Simulation
     {
         this.startYear = startYear;
         this.endYear = endYear;
+    }
+
+    /**
+     * Basically a work around for the fact that the observer that needs a
+     * reference to this instance is contructed elsewhere. It's constructor
+     * calls this method which returns the static reference to the instance.
+     * Again, not a singleton.
+     */ 
+    public static Simulation getSimulationInstance()
+    {
+        return sim;
     }
 
     /**
@@ -63,16 +86,19 @@ public class Simulation
 
             for(int i = 0; i < 3; i++)
             {
+                System.out.println(i); // Remove
+
                 file = FileIO.readCSVFile(fileNames[i]);
                 parser = FileIO.makeParser(file.get(0));
+                // We can get rid of the header now.
                 file.remove(0);
                 parser.populate(parser.parseFile(file), fileData);
-            }
 
-            //setPrimaryCompany(propFile);
-            for(Object p : fileData[0])
-            {
-                System.out.println(p.toString());
+                //setPrimaryCompany(propFile);
+                for(Object p : fileData[i])
+                {
+                    System.out.println(p.toString());
+                }
             }
         }
         catch(FileNotFoundException | InvalidFileException e)
@@ -80,6 +106,29 @@ public class Simulation
             throw new CouldNotLoadDataException(e.getMessage(), e);
         }
     }
+
+
+    /**
+     * Observers for wage changes.
+     */
+    public void attach(Observer observer)
+    {
+        this.observers.add(observer);
+    }
+
+    public void notifyObservers()
+    {
+        for(Observer o : observers)
+        {
+            o.update();
+        }
+    }
+
+    public Double getState()
+    {
+        return this.wages;
+    }
+
 
     /**
      * Sets the primary company to the first one listed in the property file.

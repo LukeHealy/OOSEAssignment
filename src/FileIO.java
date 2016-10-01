@@ -2,7 +2,7 @@
  * NAME:    FileIO
  * PURPOSE: Contain all file input and output functionality.
  * AUTHOR:  Luke Healy
- * DATE:    30/11/16
+ * DATE:    30/9/16
  */
 
 import java.io.*;
@@ -59,7 +59,7 @@ public class FileIO
      * It looks at the file header and returns the appropriate file parser.
      * If the header is not recognizable, throw an exception.
      */
-    public static Parser makeParser(String fileType)
+    public static Parser makeParser(String fileType) throws InvalidFileException
     {
         Parser parser = null;
 
@@ -69,15 +69,15 @@ public class FileIO
         }
         else if(fileType.equals("Year,Event,Property"))
         {
-
+            parser = new EventFileParser();
         }
         else if(fileType.equals("Year,Buy/Sell,Property"))
         {
-
+            parser = new PlanFileParser();
         }
         else
         {
-
+            throw new InvalidFileException("Unkown file detected.");
         }
         return parser;
     }
