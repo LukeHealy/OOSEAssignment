@@ -15,6 +15,7 @@ public class Plan
     private String propertyName;
     // Defined as the plan is executed.
     private Property property;
+    private int year;
 
     /*
      * Transaction behaviour is defined at runtime, on construction. 
@@ -23,8 +24,9 @@ public class Plan
      */
     private Transaction transactionBehaviour;
 
-    public Plan(String propertyName, Transaction transactionBehaviour)
+    public Plan(int year, String propertyName, Transaction transactionBehaviour)
     {
+        this.year = year;
         this.propertyName = propertyName;
         this.transactionBehaviour = transactionBehaviour;
     }
@@ -61,7 +63,7 @@ public class Plan
 
     public String toString()
     {
-        return ("Plan: " + transactionBehaviour + ", " + propertyName);
+        return ("Plan: " + year + ", " + transactionBehaviour + ", " + propertyName);
     }
 
 }

@@ -58,4 +58,19 @@ public class BusinessUnit extends Property implements Observer
     {
         this.wages = (double)simulation.getState();
     }
+
+    public BusinessUnit isBusinessUnit()
+    {
+        return this;
+    }
+    public Company isCompany()
+    {
+        return null;
+    }
+
 }
+
+
+
+
+

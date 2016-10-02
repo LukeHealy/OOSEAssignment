@@ -32,11 +32,18 @@ public class Event
 
     public void doEvent()
     {
-        eventBehaviour.doEvent();
+        try
+        {
+            eventBehaviour.doEvent();
+        }
+        catch(InvalidEventException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     public String toString()
     {
-        return ("Event: " + year + eventBehaviour + propertyName);
+        return ("Event: " + year + ", " + eventBehaviour + ", " + propertyName);
     }
 }

@@ -90,4 +90,18 @@ public class Company extends Property
             System.out.println(p.next().toString());
         }
     }
+    public BusinessUnit isBusinessUnit()
+    {
+        return null;
+    }
+    public Company isCompany()
+    {
+        return this;
+    }
 }
+
+
+
+
+
+

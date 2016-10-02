@@ -1,9 +1,9 @@
-public class RevenueUpEvent implements Eventful
+public class RevenueDownEvent implements Eventful
 {
     private Property property;
     private String propertyName;
 
-    public RevenueUpEvent(String propertyName)
+    public RevenueDownEvent(String propertyName)
     {
         this.propertyName = propertyName;
     }
@@ -16,7 +16,7 @@ public class RevenueUpEvent implements Eventful
         
         if((b = property.isBusinessUnit()) != null)
         {
-            b.setRevenue(b.getRevenue() * 1.05);
+            b.setRevenue(b.getRevenue() * 0.95);
         }
         else
         {

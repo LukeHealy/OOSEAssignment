@@ -62,16 +62,6 @@ public class Simulation implements Subject
         return fileData.properties.get(propertyName);
     }
 
-    public BusinessUnit resolveBusinessUnit(String propertyName)
-    {
-        BusinessUnit requested;
-        if(fileData.properties.get(propertyName) instanceof BusinessUnit)
-        {
-            requested = fileData.properties.get(propertyName);
-        }
-        return requested;
-    }
-
     /**
      * Called from main, sets the years that the simulation will work with.
      */ 
@@ -107,8 +97,6 @@ public class Simulation implements Subject
 
             for(int i = 0; i < 3; i++)
             {
-                System.out.println(i); // Remove
-
                 file = FileIO.readCSVFile(fileNames[i]);
                 parser = FileIO.makeParser(file.get(0));
                 // We can get rid of the header now.
@@ -116,6 +104,19 @@ public class Simulation implements Subject
                 parser.parseFile(file, fileData);
             }
 
+            // Remove
+            for(Property p : fileData.properties.values())
+            {
+                System.out.println(p.toString());
+            }
+            for(Plan p : fileData.plans)
+            {
+                System.out.println(p.toString());
+            }
+            for(Event p : fileData.events)
+            {
+                System.out.println(p.toString());
+            }
         }
         catch(FileNotFoundException | InvalidFileException e)
         {

@@ -88,20 +88,19 @@ public class EventFileParser implements Parser
                         event.setEventBehaviour(new WageDownEvent());
                         break;
                     case "V+":
-                        event.setEventBehaviour(new ValueUpEvent());
+                        event.setEventBehaviour(new ValueUpEvent(property));
                         break;
                     case "V-":
-                        event.setEventBehaviour(new ValueDownEvent());
+                        event.setEventBehaviour(new ValueDownEvent(property));
                         break;
                     case "R-":
                         event.setEventBehaviour(new RevenueUpEvent(property));
                         break;
                     case "R+":
-                        event.setEventBehaviour(new RevenueDownEvent());
+                        event.setEventBehaviour(new RevenueDownEvent(property));
                         break;
                     default:
                         throw new InvalidFileException("An event has an invalid type.");
-                        break;
                 }
             }
             else

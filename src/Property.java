@@ -56,9 +56,17 @@ public abstract class Property
         return this.monetaryValue;
     }
 
+    public void setMonetaryValue(double monetaryValue)
+    {
+        this.monetaryValue = monetaryValue;
+    }
+
     public double getProfit()
     {
         return profit;
     }
+
+    public abstract BusinessUnit isBusinessUnit();
+    public abstract Company isCompany();
 
 }

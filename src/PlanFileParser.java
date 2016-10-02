@@ -77,12 +77,12 @@ public class PlanFileParser implements Parser
                 if(parts[1].equals("B"))
                 {
                     // Define transaction behaviour.
-                    plans.add(new Plan(property, new BuyTransaction()));
+                    plans.add(new Plan(year, property, new BuyTransaction()));
                 }
                 else if(parts[1].equals("S"))
                 {
                     // Define transaction behaviour.
-                    plans.add(new Plan(property, new SellTransaction()));
+                    plans.add(new Plan(year, property, new SellTransaction()));
                 }
                 else
                 {

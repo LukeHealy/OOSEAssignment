@@ -25,7 +25,7 @@ public class BankAccount extends Property
      */
     public void addToBalance(double amount)
     {
-        monetaryValue+= amount;
+        setMonetaryValue(monetaryValue+= amount);
     }
 
     public double getBalance()
@@ -38,5 +38,14 @@ public class BankAccount extends Property
     public String toString()
     {
         return ("bank: " + ownerName + ", " + monetaryValue);
+    }
+
+    public BusinessUnit isBusinessUnit()
+    {
+        return null;
+    }
+    public Company isCompany()
+    {
+        return null;
     }
 }
