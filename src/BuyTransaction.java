@@ -10,7 +10,7 @@ public class BuyTransaction implements Transaction
 {
     public BuyTransaction(){}
 
-    public void transact(Company primaryCompany, Property property)
+    public void transact(Company primaryCompany, Property property) throws InvalidPlanException
     {
         double sellingPrice = property.getMonetaryValue();
 
@@ -27,7 +27,8 @@ public class BuyTransaction implements Transaction
 
         // Add to primary company.
         primaryCompany.addProperty(property);
+        property.setOwner(primaryCompany);
         // Take selling price from bank.
-        primaryCompany.changeBankBalance( -1 * sellingPrice);
+        primaryCompany.changeBankBalance( -1.0 * sellingPrice);
     }
 }

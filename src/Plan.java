@@ -40,7 +40,18 @@ public class Plan
     // Do the thing.
     public void doTransaction()
     {
-        transactionBehaviour.transact(primaryCompany, property);
+        try
+        {
+            Simulation sim = Simulation.getSimulationInstance();
+            property = sim.resolveProperty(propertyName);
+            primaryCompany = sim.getPrimaryCompany();
+            
+            transactionBehaviour.transact(primaryCompany, property);
+        }
+        catch(InvalidPlanException e)
+        {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void registerPrimaryCompany(Company primary)

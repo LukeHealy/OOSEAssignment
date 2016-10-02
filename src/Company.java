@@ -10,7 +10,6 @@ import java.util.Iterator;
 
 public class Company extends Property
 {
-    private String name;
     private BankAccount bank;
 
     // Set of owned properties.
@@ -22,7 +21,7 @@ public class Company extends Property
         this.name = name;
 
         // The single bank account.
-        bank = new BankAccount(this.name, 0.0 );
+        bank = new BankAccount(this.name, 0.0);
 
     }
 
@@ -53,18 +52,16 @@ public class Company extends Property
 
     public void removeProperty(Property prop)
     {
-        properties.remove(prop);
+        if(!properties.remove(prop)) //Not in the set
+        {
+            throw new IllegalArgumentException("Property doesn't exist: ");
+        }
     }
 
-    //Wrapper for BankAccount.addToBalance().
+    // Wrapper for BankAccount.addToBalance().
     public void changeBankBalance(double amount)
     {
         bank.addToBalance(amount);
-    }
-
-    public String getName()
-    {
-        return this.name;
     }
 
     // Return the name and account balance for printing.

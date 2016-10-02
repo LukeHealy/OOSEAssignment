@@ -104,7 +104,7 @@ public class Simulation implements Subject
                 parser.parseFile(file, fileData);
             }
 
-            // Remove
+            /* Remove
             for(Property p : fileData.properties.values())
             {
                 System.out.println(p.toString());
@@ -116,9 +116,13 @@ public class Simulation implements Subject
             for(Event p : fileData.events)
             {
                 System.out.println(p.toString());
-            }
+            }*/
+
+            registerPrimaryCompany();
+            registerOwners();
+            registerProperties();
         }
-        catch(FileNotFoundException | InvalidFileException e)
+        catch(FileNotFoundException | InvalidFileException | CouldNotLoadDataException e)
         {
             throw new CouldNotLoadDataException(e.getMessage(), e);
         }
@@ -151,12 +155,80 @@ public class Simulation implements Subject
         return this.wages;
     }
 
+    public Company getPrimaryCompany()
+    {
+        return primaryCompany;
+    }
 
     /**
-     * Sets the primary company to the first one listed in the property file.
+     * Every property is contructed with an owner name (String), but because
+     * we construct properties before all other properties are known, we must 
+     * provide them with thier owner (company) object after they are constructed.
+     * This method does exactly that. null is provided to properties with
+     * unnamed owners.
      */
-    private void setPrimaryCompany(ArrayList<String> propertyList)
+    private void registerOwners() throws CouldNotLoadDataException
     {
-        
+        for(Property p : fileData.properties.values())
+        {
+            Company owner;
+            String ownerName = p.getOwnerName();
+
+            if(ownerName.equals("unnamed"))
+            {
+                owner = null;
+            }
+            else
+            {
+                try
+                {
+                    // Use isCompany to convert the property to a company.
+                    if((owner = fileData.properties.get(ownerName).isCompany()) == null)
+                    {
+                        throw new CouldNotLoadDataException(
+                            "Cannot register " + ownerName + " as an owner: Not a company.");
+                    }
+                }
+                catch(NullPointerException e)
+                {
+                    throw new CouldNotLoadDataException(
+                        "Cannot register " + ownerName + " as an owner: Doesn't exist.", e);
+                }
+            }
+            p.setOwner(owner);
+
+            System.out.println("Set owner of '" + p.getName() + "' to '" + p.getOwnerName() + "'");
+        }
+    }
+
+    /**
+     * Used to set the set properties that ech company owns, within the company object. 
+     */
+    private void registerProperties()
+    {
+
+    }
+
+    /**
+     * Sets the primary company to the first one in the hashmap (which
+     * will be the first one in the file).
+     */
+    private void registerPrimaryCompany()
+    {
+        Iterator<Property> p = fileData.properties.values().iterator();
+
+        /*
+         * isCompany returns null until it gets a company. Do the loop until
+         * a company is returned, this must be the first one, therefore the primary.
+         */
+        while((primaryCompany = p.next().isCompany()) == null );
+
+        System.out.println("Primary company set to " + primaryCompany.getName() +"\n");
     }
 }
+
+
+
+
+
+

@@ -15,4 +15,8 @@ public class CouldNotLoadDataException extends Exception
     {
         super(("Couldn't load data: " + msg), cause);
     }
+    public CouldNotLoadDataException(String msg)
+    {
+        super("Couldn't load data: " + msg);
+    }
 }

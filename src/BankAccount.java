@@ -11,6 +11,7 @@ public class BankAccount extends Property
     public BankAccount(String ownerName, double monetaryValue)
     {
         super(ownerName, monetaryValue);
+        name = null;
     }
 
     @Override

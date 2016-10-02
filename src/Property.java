@@ -19,6 +19,7 @@ public abstract class Property
     protected String ownerName;
     protected double monetaryValue;
     protected double profit;
+    protected String name;
 
     public Property(String ownerName, double monetaryValue)
     {
@@ -46,6 +47,10 @@ public abstract class Property
         }
     }
 
+    public String getOwnerName()
+    {
+        return this.ownerName;
+    }
     public Company getOwner()
     {
         return this.owner;
@@ -66,6 +71,10 @@ public abstract class Property
         return profit;
     }
 
+    public String getName()
+    {
+        return name;
+    }
     public abstract BusinessUnit isBusinessUnit();
     public abstract Company isCompany();
 

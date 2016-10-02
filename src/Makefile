@@ -1,4 +1,8 @@
 all:
+	make build
+	make clean
+
+build:
 	make clean
 	clear; clear
 	javac Controller.java

@@ -9,7 +9,6 @@ public class BusinessUnit extends Property implements Observer
 {
     private double wages;
     private double revenue;
-    private String name;
     private Subject simulation;
 
     public BusinessUnit(String ownerName, String name, 
@@ -29,11 +28,6 @@ public class BusinessUnit extends Property implements Observer
     public void calcProfit()
     {
         profit = revenue - wages;
-    }
-
-    public String getName()
-    {
-        return this.name;
     }
 
     public double getRevenue()
