@@ -119,7 +119,9 @@ public class Simulation implements Subject
             }*/
 
             registerPrimaryCompany();
+            System.out.println("");
             registerOwners();
+            System.out.println("");
             registerProperties();
         }
         catch(FileNotFoundException | InvalidFileException | CouldNotLoadDataException e)
@@ -202,11 +204,29 @@ public class Simulation implements Subject
     }
 
     /**
-     * Used to set the set properties that ech company owns, within the company object. 
+     * Used to attach the set of properties owned by a company to that company.
      */
     private void registerProperties()
     {
+        Company current;
 
+        // For every property
+        for(Property p : fileData.properties.values())
+        {
+            // If it's a company
+            if((current = p.isCompany()) != null)
+            {
+                // Add every property where current is the owner.
+                for(Property p2 : fileData.properties.values())
+                {
+                    if(p2.getOwner() != null && p2.getOwner().equals(current))
+                    {
+                        current.addProperty(p2);
+                        System.out.println("Added " + p2.getName() + " to " + current.getName());
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -223,7 +243,7 @@ public class Simulation implements Subject
          */
         while((primaryCompany = p.next().isCompany()) == null );
 
-        System.out.println("Primary company set to " + primaryCompany.getName() +"\n");
+        System.out.println("Primary company set to " + primaryCompany.getName());
     }
 }
 

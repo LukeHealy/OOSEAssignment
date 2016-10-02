@@ -19,6 +19,7 @@ public class Company extends Property
     {
         super(ownerName, monetaryValue);
         this.name = name;
+        properties = new HashSet<Property>();
 
         // The single bank account.
         bank = new BankAccount(this.name, 0.0);
