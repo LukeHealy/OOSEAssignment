@@ -55,6 +55,7 @@ public class Company extends Property
 
     public void removeProperty(Property prop)
     {
+        prop.setOwner(null);
         if(!properties.remove(prop)) //Not in the set
         {
             throw new IllegalArgumentException("Property doesn't exist: ");
