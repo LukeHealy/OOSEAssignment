@@ -11,8 +11,15 @@ import java.util.HashMap;
 
 public class PropertyFileParser implements Parser
 {
+    private FileData fileData;
+    
+    public PropertyFileParser(FileData fileData)
+    {
+        this.fileData = fileData;
+    }
+
     @Override
-    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException
+    public void parseFile(ArrayList<String> propertyString) throws InvalidFileException
     {
         HashMap<String,Property> properties = new HashMap<String,Property>();
 
@@ -94,7 +101,7 @@ public class PropertyFileParser implements Parser
                     "Property file: '" + parts[1] + "' is not a valid type. Use 'C' or 'B'.");
             }
         }
-        fileData.properties = properties;
+        fileData.setProperties(properties);
     }
 }
 

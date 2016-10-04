@@ -1,6 +1,12 @@
+/***
+ * NAME:    
+ * PURPOSE: 
+ * AUTHOR:  Luke Healy
+ * DATE:    4/10/16
+ */
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 /***
  * File parser factory
@@ -8,5 +14,5 @@ import java.util.List;
 
 public interface Parser
 {
-    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException;
+    public void parseFile(ArrayList<String> propertyString) throws InvalidFileException;
 }

@@ -14,8 +14,14 @@ import java.util.List;
 
 public class PlanFileParser implements Parser
 {
+    private FileData fileData;
+    public PlanFileParser(FileData fileData)
+    {
+        this.fileData = fileData;
+    }
+
     @Override
-    public void parseFile(ArrayList<String> planfile, FileData fileData) throws InvalidFileException
+    public void parseFile(ArrayList<String> planfile) throws InvalidFileException
     {
         int year;
         int previousYear = 0;
@@ -96,7 +102,7 @@ public class PlanFileParser implements Parser
                     "Plan File: An plan is missing a type.");
             }
         }
-        fileData.plans = plans;
+        fileData.setPlans(plans);
     }
 }
 

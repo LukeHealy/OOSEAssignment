@@ -59,7 +59,7 @@ public class Simulation implements Subject
 
     public Property resolveProperty(String propertyName)
     {
-        return fileData.properties.get(propertyName);
+        return fileData.getProperties().get(propertyName);
     }
 
     /**
@@ -94,37 +94,27 @@ public class Simulation implements Subject
         {
             ArrayList<String> file;
             Parser parser;
+            FileIO fileIO = new FileIO(fileData);
 
             for(int i = 0; i < 3; i++)
             {
-                file = FileIO.readCSVFile(fileNames[i]);
-                parser = FileIO.makeParser(file.get(0));
+                file = fileIO.readCSVFile(fileNames[i]);
+                parser = fileIO.makeParser(file.get(0));
                 // We can get rid of the header now.
                 file.remove(0);
-                parser.parseFile(file, fileData);
+                parser.parseFile(file);
             }
-
-            /* Remove
-            for(Property p : fileData.properties.values())
-            {
-                System.out.println(p.toString());
-            }
-            for(Plan p : fileData.plans)
-            {
-                System.out.println(p.toString());
-            }
-            for(Event p : fileData.events)
-            {
-                System.out.println(p.toString());
-            }*/
 
             registerPrimaryCompany();
             System.out.println("");
             registerOwners();
             System.out.println("");
             registerProperties();
+            System.out.println("");
+            checkOwnershipSanity();
         }
-        catch(FileNotFoundException | InvalidFileException | CouldNotLoadDataException e)
+        catch(FileNotFoundException | 
+            InvalidFileException | BadOwnershipException e)
         {
             throw new CouldNotLoadDataException(e.getMessage(), e);
         }
@@ -168,10 +158,11 @@ public class Simulation implements Subject
      * provide them with thier owner (company) object after they are constructed.
      * This method does exactly that. null is provided to properties with
      * unnamed owners.
+     * Could not load data will be caught in main.
      */
     private void registerOwners() throws CouldNotLoadDataException
     {
-        for(Property p : fileData.properties.values())
+        for(Property p : fileData.getProperties().values())
         {
             Company owner;
             String ownerName = p.getOwnerName();
@@ -185,7 +176,7 @@ public class Simulation implements Subject
                 try
                 {
                     // Use isCompany to convert the property to a company.
-                    if((owner = fileData.properties.get(ownerName).isCompany()) == null)
+                    if((owner = fileData.getProperties().get(ownerName).isCompany()) == null)
                     {
                         throw new CouldNotLoadDataException(
                             "Cannot register " + ownerName + " as an owner: Not a company.");
@@ -211,13 +202,13 @@ public class Simulation implements Subject
         Company current;
 
         // For every property
-        for(Property p : fileData.properties.values())
+        for(Property p : fileData.getProperties().values())
         {
             // If it's a company
             if((current = p.isCompany()) != null)
             {
                 // Add every property where current is the owner.
-                for(Property p2 : fileData.properties.values())
+                for(Property p2 : fileData.getProperties().values())
                 {
                     if(p2.getOwner() != null && p2.getOwner().equals(current))
                     {
@@ -229,13 +220,42 @@ public class Simulation implements Subject
         }
     }
 
+    private void checkOwnershipSanity() throws BadOwnershipException
+    {
+        ArrayList<Property> properties =  new ArrayList<Property>(fileData.getProperties().values());
+        HashSet<Company> seenOwners ;
+        Company current;
+
+        for(Property p : properties)
+        {
+            seenOwners = new HashSet<Company>();
+
+            if((current = p.isCompany()) != null)
+            {
+                System.out.println("\nOwnership list for " + current.getName() + ": ");
+                while(current != null)
+                {
+                    System.out.print(current.getName() + " : ");
+
+                    if(!seenOwners.add(current))
+                    {
+                        throw new BadOwnershipException(
+                            "Cyclic ownership detected.");
+                    }
+                    current = current.getOwner();
+                }
+            }
+        }
+        System.out.println("");
+    }
+
     /**
      * Sets the primary company to the first one in the hashmap (which
      * will be the first one in the file).
      */
     private void registerPrimaryCompany()
     {
-        Iterator<Property> p = fileData.properties.values().iterator();
+        Iterator<Property> p = fileData.getProperties().values().iterator();
 
         /*
          * isCompany returns null until it gets a company. Do the loop until

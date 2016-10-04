@@ -10,10 +10,16 @@ import java.util.*;
 
 public class FileIO
 {
+    private FileData fileData;
+
+    public FileIO(FileData fileData)
+    {
+        this.fileData = fileData;
+    }
     /**
      * Read any .csv file and return its contents as an arraylist of lines.
      */
-    public static ArrayList<String> readCSVFile(String path) throws FileNotFoundException
+    public ArrayList<String> readCSVFile(String path) throws FileNotFoundException
     {
         String line;
         ArrayList<String> file = new ArrayList<String>();
@@ -59,21 +65,21 @@ public class FileIO
      * It looks at the file header and returns the appropriate file parser.
      * If the header is not recognizable, throw an exception.
      */
-    public static Parser makeParser(String fileType) throws InvalidFileException
+    public Parser makeParser(String fileType) throws InvalidFileException
     {
         Parser parser = null;
 
         if(fileType.equals("Name,Type,Owner,Worth,Revenue,Wages"))
         {
-            parser = new PropertyFileParser();
+            parser = new PropertyFileParser(fileData);
         }
         else if(fileType.equals("Year,Event,Property"))
         {
-            parser = new EventFileParser();
+            parser = new EventFileParser(fileData);
         }
         else if(fileType.equals("Year,Buy/Sell,Property"))
         {
-            parser = new PlanFileParser();
+            parser = new PlanFileParser(fileData);
         }
         else
         {

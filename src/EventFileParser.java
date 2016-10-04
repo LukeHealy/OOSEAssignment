@@ -1,10 +1,27 @@
+/***
+ * NAME:    
+ * PURPOSE: 
+ * AUTHOR:  Luke Healy
+ * DATE:    4/10/16
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class EventFileParser implements Parser
 {
+    private FileData fileData;
+
+    public EventFileParser(FileData fileData)
+    {
+        this.fileData = fileData;
+    }
+
+    /**
+     * 
+     */
     @Override
-    public void parseFile(ArrayList<String> eventFile, FileData fileDate) throws InvalidFileException
+    public void parseFile(ArrayList<String> eventFile) throws InvalidFileException
     {   
         int year;
         int previousYear = 0;
@@ -109,6 +126,6 @@ public class EventFileParser implements Parser
             }
             events.add(event);
         }
-        fileDate.events = events;
+        fileData.setEvents(events);
     }
 }
