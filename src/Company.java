@@ -22,8 +22,8 @@ public class Company extends Property
         properties = new HashSet<Property>();
 
         // The single bank account.
-        bank = new BankAccount(this.name, 0.0);
-
+        bank = new BankAccount(this.name, monetaryValue);
+        properties.add(bank);
     }
 
     /**
@@ -36,10 +36,12 @@ public class Company extends Property
         double totalProfits = 0.0;
 
         Iterator<Property> p = properties.iterator();
-
+        Property current;
         while(p.hasNext())
         {
-            totalProfits+= p.next().getProfit();
+            current = p.next();
+            current.calcProfit();
+            totalProfits+= current.getProfit();
         }
 
         profit = totalProfits;
@@ -57,6 +59,18 @@ public class Company extends Property
         {
             throw new IllegalArgumentException("Property doesn't exist: ");
         }
+    }
+
+    public void updateBankBalance()
+    {
+        calcProfit();
+        changeBankBalance(profit);
+    }
+
+    public double getBankBalance()
+    {
+        //return monetary value of bank
+        return bank.getBalance();
     }
 
     // Wrapper for BankAccount.addToBalance().

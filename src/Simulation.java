@@ -7,9 +7,12 @@
 
 import java.util.*;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 
 public class Simulation implements Subject
 {
+    private final DecimalFormat formatter = new DecimalFormat("#0.00"); 
+    private final String formatLine = "+------+-----------------------+------------------+";
 
     private int startYear;
     private int endYear;
@@ -44,7 +47,7 @@ public class Simulation implements Subject
      */
     private HashMap<String,Property> properties;
 
-    public Simulation()
+    private Simulation()
     {
         startYear = 0;
         endYear = 0;
@@ -56,6 +59,7 @@ public class Simulation implements Subject
         observers = new ArrayList<Observer>();
         sim = this;
     }
+
 
     public Property resolveProperty(String propertyName)
     {
@@ -79,6 +83,10 @@ public class Simulation implements Subject
      */ 
     public static Simulation getSimulationInstance()
     {
+        if(sim == null)
+        {
+            sim = new Simulation();
+        }
         return sim;
     }
 
@@ -106,11 +114,8 @@ public class Simulation implements Subject
             }
 
             registerPrimaryCompany();
-            System.out.println("");
             registerOwners();
-            System.out.println("");
             registerProperties();
-            System.out.println("");
             checkOwnershipSanity();
         }
         catch(FileNotFoundException | 
@@ -120,6 +125,84 @@ public class Simulation implements Subject
         }
     }
 
+    public void doSimulation()
+    {
+        printHeading();
+        ArrayList<Property> properties =  new ArrayList<Property>(
+            fileData.getProperties().values());
+        ArrayList<Event> events = fileData.getEvents();
+        ArrayList<Plan> plans = fileData.getPlans();
+        ArrayList<Company> companies = null;
+
+        for(int year = startYear; year <= endYear; year++)
+        {
+            companies = new ArrayList<Company>();
+
+            Company current;
+
+            for(Property p : properties) // For each company
+            {
+                if((current = p.isCompany()) != null)
+                {
+                    companies.add(current);
+                }
+            }
+            // Update bank account according to profit
+            if(year > startYear)
+            {
+                updateBankBalances(companies);
+            }
+            // Output year, company name and bank balance
+            output(year, companies);
+            // Do event for this year
+            for(Event e : events)
+            {
+                if(e.getYear() == year)
+                {
+                    //System.out.println(e.toString());
+                    e.doEvent();
+                }
+            }
+            // Do plans for this year
+            for(Plan pl : plans)
+            {
+                if(pl.getYear() == year)
+                {
+                    //System.out.println(pl.toString());
+                    pl.doTransaction();
+                }
+            }
+        }
+        output(endYear + 1, companies);            
+
+        System.out.println(formatLine);
+    }
+
+    public void printHeading()
+    {
+        System.out.println(formatLine);
+        System.out.println("| Year | Company               | Bank Balance     |");
+    }
+
+    private void output(int year, ArrayList<Company> companies)
+    {
+        System.out.println(formatLine);
+        for(Company c : companies)
+        {
+            double balance = c.getBankBalance();
+            System.out.printf(
+                "| %-5d| %-22s| $%-16s|\n", year, c.getName(), 
+                (balance > 0.0 ? formatter.format(balance) : "(" + formatter.format(balance) + ")") );
+        }
+    }
+
+    private void updateBankBalances(ArrayList<Company> companies)
+    {
+        for(Company c : companies)
+        {
+            c.updateBankBalance();
+        }
+    }
 
     /**
      * Observers for wage changes.
@@ -190,7 +273,7 @@ public class Simulation implements Subject
             }
             p.setOwner(owner);
 
-            System.out.println("Set owner of '" + p.getName() + "' to '" + p.getOwnerName() + "'");
+            //System.out.println("Set owner of '" + p.getName() + "' to '" + p.getOwnerName() + "'");
         }
     }
 
@@ -213,40 +296,46 @@ public class Simulation implements Subject
                     if(p2.getOwner() != null && p2.getOwner().equals(current))
                     {
                         current.addProperty(p2);
-                        System.out.println("Added " + p2.getName() + " to " + current.getName());
+                        //System.out.println("Added " + p2.getName() + " to " + current.getName());
                     }
                 }
             }
         }
     }
 
+    /**
+     * Cycles through all properties and get it's owner, then 
+     * gets the owners owner etc until null is reached.
+     * Record each owner as it goes and if a duplicate is seen,
+     * throw an exception. The iteration will only ever end in null,
+     * or find a duplicate owner.
+     */
     private void checkOwnershipSanity() throws BadOwnershipException
     {
-        ArrayList<Property> properties =  new ArrayList<Property>(fileData.getProperties().values());
-        HashSet<Company> seenOwners ;
-        Company current;
+        ArrayList<Property> properties =  new ArrayList<Property>(
+            fileData.getProperties().values());
+        HashSet<Property> seenOwners;
+        Property current;
 
         for(Property p : properties)
         {
-            seenOwners = new HashSet<Company>();
+            seenOwners = new HashSet<Property>();
 
-            if((current = p.isCompany()) != null)
+            current = p;
+            //System.out.print("Ownership list for ");
+            while(current != null)
             {
-                System.out.println("\nOwnership list for " + current.getName() + ": ");
-                while(current != null)
-                {
-                    System.out.print(current.getName() + " : ");
+                //System.out.print(current.getName() + "-> ");
 
-                    if(!seenOwners.add(current))
-                    {
-                        throw new BadOwnershipException(
-                            "Cyclic ownership detected.");
-                    }
-                    current = current.getOwner();
+                if(!seenOwners.add(current))
+                {
+                    throw new BadOwnershipException(
+                        "Cyclic ownership detected.");
                 }
+                current = current.getOwner();
             }
+            //System.out.println("");
         }
-        System.out.println("");
     }
 
     /**
@@ -262,8 +351,6 @@ public class Simulation implements Subject
          * a company is returned, this must be the first one, therefore the primary.
          */
         while((primaryCompany = p.next().isCompany()) == null );
-
-        System.out.println("Primary company set to " + primaryCompany.getName());
     }
 }
 

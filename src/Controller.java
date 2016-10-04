@@ -5,11 +5,12 @@ public class Controller
 {
     public static void main(String[] args)
     {   
-        Simulation sim = new Simulation();
+        Simulation sim = Simulation.getSimulationInstance();
         try
         {
             sim.setYears(Integer.parseInt(args[3]), Integer.parseInt(args[4]));
             sim.loadData(Arrays.copyOfRange(args, 0, 3));
+            sim.doSimulation();
         }
         catch(CouldNotLoadDataException e)
         {
@@ -19,6 +20,5 @@ public class Controller
         {
             e2.printStackTrace();
         }
-        //sim.startSimulation();
     }
 }

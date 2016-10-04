@@ -19,6 +19,11 @@ public class Event
         this.eventBehaviour = eventBehaviour;
     }
 
+    public int getYear()
+    {
+        return year;
+    }
+
     public Event(int year, String propertyName)
     {
         this.propertyName = propertyName;

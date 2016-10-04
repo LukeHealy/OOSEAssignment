@@ -12,7 +12,6 @@ public class ValueUpEvent implements Eventful
     public void doEvent() throws InvalidEventException
     {
         property = Simulation.getSimulationInstance().resolveProperty(propertyName);
-        
         property.setMonetaryValue(property.getMonetaryValue() * 1.05);
     }
 }

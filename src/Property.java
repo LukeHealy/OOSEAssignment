@@ -49,16 +49,16 @@ public abstract class Property
 
     public String getOwnerName()
     {
-        return this.ownerName;
+        return ownerName;
     }
     public Company getOwner()
     {
-        return this.owner;
+        return owner;
     }
 
     public double getMonetaryValue()
     {
-        return this.monetaryValue;
+        return monetaryValue;
     }
 
     public void setMonetaryValue(double monetaryValue)

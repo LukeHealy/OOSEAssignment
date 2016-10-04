@@ -45,7 +45,7 @@ public class Plan
             Simulation sim = Simulation.getSimulationInstance();
             property = sim.resolveProperty(propertyName);
             primaryCompany = sim.getPrimaryCompany();
-            
+
             transactionBehaviour.transact(primaryCompany, property);
         }
         catch(InvalidPlanException e)
@@ -70,6 +70,11 @@ public class Plan
     public String getPropertyName()
     {
         return propertyName;
+    }
+
+    public int getYear()
+    {
+        return year;
     }
 
     public String toString()
