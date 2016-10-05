@@ -1,4 +1,4 @@
 public interface Eventful
 {
-    public abstract void doEvent() throws InvalidEventException;
+    public void doEvent(Simulation sim) throws InvalidEventException;
 }

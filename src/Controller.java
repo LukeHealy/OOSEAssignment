@@ -5,11 +5,16 @@ public class Controller
 {
     public static void main(String[] args)
     {   
-        Simulation sim = Simulation.getSimulationInstance();
         try
         {
-            sim.setYears(Integer.parseInt(args[3]), Integer.parseInt(args[4]));
-            sim.loadData(Arrays.copyOfRange(args, 0, 3));
+            // read files into filedata
+            FileData fileData = new FileData();
+            FileIO fileIO = new FileIO(fileData);
+            fileIO.readFiles(args);
+
+            Simulation sim = new Simulation(fileData, Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+
+            sim.loadData();
             sim.doSimulation();
         }
         catch(CouldNotLoadDataException e)

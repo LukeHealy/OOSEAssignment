@@ -13,13 +13,8 @@ public class PropertyFileParser implements Parser
 {
     private FileData fileData;
     
-    public PropertyFileParser(FileData fileData)
-    {
-        this.fileData = fileData;
-    }
-
     @Override
-    public void parseFile(ArrayList<String> propertyString) throws InvalidFileException
+    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException
     {
         HashMap<String,Property> properties = new HashMap<String,Property>();
 

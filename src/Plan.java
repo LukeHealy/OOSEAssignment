@@ -16,6 +16,7 @@ public class Plan
     // Defined as the plan is executed.
     private Property property;
     private int year;
+    private Simulation sim;
 
     /*
      * Transaction behaviour is defined at runtime, on construction. 
@@ -37,15 +38,15 @@ public class Plan
         this.transactionBehaviour = transactionBehaviour;
     }
 
+    public void setProperty(Property property){
+        this.property = property;
+    }
+
     // Do the thing.
     public void doTransaction()
     {
         try
         {
-            Simulation sim = Simulation.getSimulationInstance();
-            property = sim.resolveProperty(propertyName);
-            primaryCompany = sim.getPrimaryCompany();
-
             transactionBehaviour.transact(primaryCompany, property);
         }
         catch(InvalidPlanException e)

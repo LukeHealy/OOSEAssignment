@@ -19,9 +19,11 @@ public class BusinessUnit extends Property implements Observer
         this.name = name;
         this.revenue = revenue;
         this.wages = wages;
+    }
 
-        this.simulation = Simulation.getSimulationInstance();
-        simulation.attach(this);
+    public void attachSubject(Simulation sim)
+    {
+        sim.attach(this);
     }
 
     @Override
@@ -48,9 +50,9 @@ public class BusinessUnit extends Property implements Observer
     }
 
     @Override
-    public void update()
+    public void update(double change)
     {
-        this.wages = (double)simulation.getState();
+        wages*= change;
     }
 
     public BusinessUnit isBusinessUnit()

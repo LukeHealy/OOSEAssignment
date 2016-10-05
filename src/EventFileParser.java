@@ -10,18 +10,11 @@ import java.util.List;
 
 public class EventFileParser implements Parser
 {
-    private FileData fileData;
-
-    public EventFileParser(FileData fileData)
-    {
-        this.fileData = fileData;
-    }
-
     /**
      * 
      */
     @Override
-    public void parseFile(ArrayList<String> eventFile) throws InvalidFileException
+    public void parseFile(ArrayList<String> eventFile, FileData fileData) throws InvalidFileException
     {   
         int year;
         int previousYear = 0;
@@ -104,10 +97,10 @@ public class EventFileParser implements Parser
                 switch(parts[1])
                 {
                     case "W-":
-                        event.setEventBehaviour(new WageUpEvent());
+                        event.setEventBehaviour(new WageDownEvent());
                         break;
                     case "W+":
-                        event.setEventBehaviour(new WageDownEvent());
+                        event.setEventBehaviour(new WageUpEvent());
                         break;
                     case "V+":
                         event.setEventBehaviour(new ValueUpEvent(property));

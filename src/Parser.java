@@ -14,5 +14,5 @@ import java.util.List;
 
 public interface Parser
 {
-    public void parseFile(ArrayList<String> propertyString) throws InvalidFileException;
+    public void parseFile(ArrayList<String> file, FileData fileData) throws InvalidFileException;
 }

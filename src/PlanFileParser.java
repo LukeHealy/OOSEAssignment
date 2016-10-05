@@ -14,14 +14,9 @@ import java.util.List;
 
 public class PlanFileParser implements Parser
 {
-    private FileData fileData;
-    public PlanFileParser(FileData fileData)
-    {
-        this.fileData = fileData;
-    }
 
     @Override
-    public void parseFile(ArrayList<String> planfile) throws InvalidFileException
+    public void parseFile(ArrayList<String> planfile, FileData fileData) throws InvalidFileException
     {
         int year;
         int previousYear = 0;

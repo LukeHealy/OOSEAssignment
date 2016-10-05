@@ -6,8 +6,8 @@ public class WageUpEvent extends WageEvent
     }
 
     @Override
-    public void doEvent()
+    public void doEvent(Simulation sim)
     {
-        sim.setWage(sim.getState() * 1.05);
+        sim.setWageChange(1.05);
     }
 }

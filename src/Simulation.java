@@ -9,7 +9,7 @@ import java.util.*;
 import java.io.FileNotFoundException;
 import java.text.DecimalFormat;
 
-public class Simulation implements Subject
+public class Simulation
 {
     private final DecimalFormat formatter = new DecimalFormat("#0.00"); 
     private final String formatLine = "+------+-----------------------+------------------+";
@@ -18,14 +18,6 @@ public class Simulation implements Subject
     private int endYear;
     private Company primaryCompany;
     private List<Observer> observers;
-    private double wages;
-
-    /*
-     * Hold a static reference to the instance. NOTE: this is not a singleton.
-     * This reference is overwitten with the new instance when one is constructed.
-     * It is needed so that observers can get the instance of the subject.
-     */
-    private static Simulation sim = null;
 
     /* Container of 3 containers, properties, plans and events.
      * They hold all the data read from the input files.
@@ -47,17 +39,16 @@ public class Simulation implements Subject
      */
     private HashMap<String,Property> properties;
 
-    private Simulation()
+    public Simulation(FileData fileData, int startYear, int endYear)
     {
-        startYear = 0;
-        endYear = 0;
+        this.startYear = startYear;
+        this.endYear = endYear;
+        // Init the ArrayLists.
+        this.fileData = fileData;
+
         primaryCompany = null;
 
-        // Init the ArrayLists.
-        fileData = new FileData();
-
         observers = new ArrayList<Observer>();
-        sim = this;
     }
 
 
@@ -76,50 +67,23 @@ public class Simulation implements Subject
     }
 
     /**
-     * Basically a work around for the fact that the observer that needs a
-     * reference to this instance is contructed elsewhere. It's constructor
-     * calls this method which returns the static reference to the instance.
-     * Again, not a singleton.
-     */ 
-    public static Simulation getSimulationInstance()
-    {
-        if(sim == null)
-        {
-            sim = new Simulation();
-        }
-        return sim;
-    }
-
-    /**
      * loadData takes the three file names and loads their contents into
      * the appropriate containers. If there is an issue with the files,
      * it throws an exception up to main which will ensure the program
      * quits safely.
      */
-    public void loadData(String[] fileNames) throws CouldNotLoadDataException
+    public void loadData() throws CouldNotLoadDataException
     {
         try
         {
-            ArrayList<String> file;
-            Parser parser;
-            FileIO fileIO = new FileIO(fileData);
-
-            for(int i = 0; i < 3; i++)
-            {
-                file = fileIO.readCSVFile(fileNames[i]);
-                parser = fileIO.makeParser(file.get(0));
-                // We can get rid of the header now.
-                file.remove(0);
-                parser.parseFile(file);
-            }
-
             registerPrimaryCompany();
             registerOwners();
-            registerProperties();
+            registerPropertiesInCompanies();
+            registerPropertiesInPlans();
             checkOwnershipSanity();
+            registerBusinessUnitObservers();
         }
-        catch(FileNotFoundException | 
-            InvalidFileException | BadOwnershipException e)
+        catch(BadOwnershipException e)
         {
             throw new CouldNotLoadDataException(e.getMessage(), e);
         }
@@ -154,13 +118,13 @@ public class Simulation implements Subject
             }
             // Output year, company name and bank balance
             output(year, companies);
-            // Do event for this year
+            // Do events for this year
             for(Event e : events)
             {
                 if(e.getYear() == year)
                 {
                     //System.out.println(e.toString());
-                    e.doEvent();
+                    e.doEvent(this);
                 }
             }
             // Do plans for this year
@@ -204,30 +168,37 @@ public class Simulation implements Subject
         }
     }
 
+    private void registerBusinessUnitObservers()
+    {
+        BusinessUnit current;
+        for(Property p : fileData.getProperties().values())
+        {
+            if((current = p.isBusinessUnit()) != null)
+            {
+                current.attachSubject(this);
+            }
+        }
+    }
+
     /**
      * Observers for wage changes.
      */
-    public void setWage(double wages)
-    {
-        this.wages = wages;
-        notifyObservers();
-    }
     public void attach(Observer observer)
     {
         this.observers.add(observer);
     }
+ 
+    public void setWageChange(double wages)
+    {
+        notifyObservers(wages);
+    }
 
-    public void notifyObservers()
+    public void notifyObservers(double wage)
     {
         for(Observer o : observers)
         {
-            o.update();
+            o.update(wage);
         }
-    }
-
-    public Double getState()
-    {
-        return this.wages;
     }
 
     public Company getPrimaryCompany()
@@ -277,10 +248,17 @@ public class Simulation implements Subject
         }
     }
 
+    private void registerPropertiesInPlans(){
+        for(Plan p : fileData.getPlans())
+        {
+            p.setProperty(resolveProperty(p.getPropertyName()));
+        }
+    }
+
     /**
      * Used to attach the set of properties owned by a company to that company.
      */
-    private void registerProperties()
+    private void registerPropertiesInCompanies()
     {
         Company current;
 
@@ -322,10 +300,8 @@ public class Simulation implements Subject
             seenOwners = new HashSet<Property>();
 
             current = p;
-            //System.out.print("Ownership list for ");
             while(current != null)
             {
-                //System.out.print(current.getName() + "-> ");
 
                 if(!seenOwners.add(current))
                 {
@@ -334,7 +310,6 @@ public class Simulation implements Subject
                 }
                 current = current.getOwner();
             }
-            //System.out.println("");
         }
     }
 

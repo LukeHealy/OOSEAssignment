@@ -8,7 +8,7 @@ build:
 	javac Controller.java
 
 run:
-	java Controller property.csv plan.csv event.csv 2017 2020
+	java Controller input/property.csv input/plan.csv input/event.csv 2017 2020
 
 clean:
 	rm -f *.class

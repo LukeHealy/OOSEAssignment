@@ -35,16 +35,26 @@ public class Event
         this.eventBehaviour = eventBehaviour;
     }
 
-    public void doEvent()
+    public void doEvent(Simulation sim)
     {
         try
         {
-            eventBehaviour.doEvent();
+            eventBehaviour.doEvent(sim);
         }
         catch(InvalidEventException e)
         {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void setProperty(Property property)
+    {
+        this.property = property;
+    }
+
+    public String getPropertyName()
+    {
+        return propertyName;
     }
 
     public String toString()

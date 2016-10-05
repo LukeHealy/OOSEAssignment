@@ -1,6 +1,5 @@
 public class ValueDownEvent implements Eventful
 {
-    private Property property;
     private String propertyName;
 
     public ValueDownEvent(String propertyName)
@@ -9,10 +8,9 @@ public class ValueDownEvent implements Eventful
     }
 
     @Override
-    public void doEvent() throws InvalidEventException
+    public void doEvent(Simulation sim)
     {
-        property = Simulation.getSimulationInstance().resolveProperty(propertyName);
-        
+        Property property = sim.resolveProperty(propertyName);
         property.setMonetaryValue(property.getMonetaryValue() * 0.95);
     }
 }

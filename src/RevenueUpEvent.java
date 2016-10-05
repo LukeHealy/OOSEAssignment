@@ -1,6 +1,5 @@
 public class RevenueUpEvent implements Eventful
 {
-    private Property property;
     private String propertyName;
 
     public RevenueUpEvent(String propertyName)
@@ -8,11 +7,11 @@ public class RevenueUpEvent implements Eventful
         this.propertyName = propertyName;
     }
 
-    @Override
-    public void doEvent() throws InvalidEventException
+      @Override
+    public void doEvent(Simulation sim) throws InvalidEventException
     {
+        Property property = sim.resolveProperty(propertyName);
         BusinessUnit b;
-        property = Simulation.getSimulationInstance().resolveProperty(propertyName);
         
         if((b = property.isBusinessUnit()) != null)
         {
