@@ -23,7 +23,7 @@ public class Controller
         }
         catch(ArrayIndexOutOfBoundsException e2)
         {
-            e2.printStackTrace();
+            System.out.println("Not enough arguments.");
         }
     }
 }
