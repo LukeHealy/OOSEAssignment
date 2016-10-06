@@ -23,7 +23,7 @@ public class FileIO
     /**
      * Read any .csv file and return its contents as an arraylist of lines.
      */
-    private ArrayList<String> readCSVFile(String path) throws FileNotFoundException
+    private ArrayList<String> readCSVFile(String path) throws FileNotFoundException, CouldNotLoadDataException
     {
         String line;
         ArrayList<String> file = new ArrayList<String>();
@@ -45,15 +45,35 @@ public class FileIO
         // Some issue with the file so close it and tell the user.
         catch(IOException e2)
         {
-            System.out.println(e2.getMessage());
             try
             {
-                fis.close();
+                if(fis != null)
+                {
+                    fis.close();
+                }
             }
             // Can't close the file.
             catch(IOException e3)
             {
                 System.out.println("Can't close file.");
+                throw new CouldNotLoadDataException(e3.getMessage());
+            }
+            throw new CouldNotLoadDataException(e2.getMessage());
+        }
+        finally
+        {
+            try
+            {
+                if(fis != null)
+                {
+                    fis.close();
+                }
+            }
+            // Can't close the file.
+            catch(IOException e3)
+            {
+                System.out.println("Can't close file.");
+                throw new CouldNotLoadDataException(e3.getMessage());
             }
         }
         return file;

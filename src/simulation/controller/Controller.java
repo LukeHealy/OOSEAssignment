@@ -13,13 +13,21 @@ public class Controller
     {   
         try
         {
+            int startYear = Integer.parseInt(args[3]);
+            int endYear =Integer.parseInt(args[4]);
+
+            if(endYear < startYear)
+            {
+                throw new IllegalArgumentException("Start year must be less than end year.");
+            }
+
             // Read files into fileData.
             FileData fileData = new FileData();
             FileIO fileIO = new FileIO(fileData);
             fileIO.readFiles(args);
 
             // Create simulation.
-            Simulation sim = new Simulation(fileData, Integer.parseInt(args[3]), Integer.parseInt(args[4]));
+            Simulation sim = new Simulation(fileData, startYear, endYear);
 
             // Init and start simulation.
             sim.loadData();
@@ -31,7 +39,15 @@ public class Controller
         }
         catch(ArrayIndexOutOfBoundsException e2)
         {
-            System.out.println("Not enough arguments.");
+            System.out.println("Fatal Error: Not enough arguments.");
+        }
+        catch(NumberFormatException e4)
+        {
+            System.out.println("Fatal Error: Start and end years must be integers.");
+        }
+        catch(IllegalArgumentException e3)
+        {
+            System.out.println("Fatal Error: " + e3.getMessage());
         }
     }
 }
