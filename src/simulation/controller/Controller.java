@@ -13,6 +13,12 @@ public class Controller
     {   
         try
         {
+            if(args.length < 5)
+            {
+                System.err.println("Not enough arguments");
+                System.exit(1);
+            }
+
             int startYear = Integer.parseInt(args[3]);
             int endYear =Integer.parseInt(args[4]);
 
@@ -35,19 +41,15 @@ public class Controller
         }
         catch(CouldNotLoadDataException e)
         {
-            System.out.println("Fatal Error: " + e.getMessage());
-        }
-        catch(ArrayIndexOutOfBoundsException e2)
-        {
-            System.out.println("Fatal Error: Not enough arguments.");
+            System.err.println("Fatal Error: " + e.getMessage());
         }
         catch(NumberFormatException e4)
         {
-            System.out.println("Fatal Error: Start and end years must be integers.");
+            System.err.println("Fatal Error: Start and end years must be integers.");
         }
         catch(IllegalArgumentException e3)
         {
-            System.out.println("Fatal Error: " + e3.getMessage());
+            System.err.println("Fatal Error: " + e3.getMessage());
         }
     }
 }
