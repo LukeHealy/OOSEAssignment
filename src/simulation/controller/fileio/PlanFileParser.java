@@ -1,10 +1,10 @@
 /***
  * NAME:    PlanFileParser
- * PURPOSE: To parse and validate the plan file. Also houses a 
- *          version of the populate method.
- *          Note: The parser validates the FILE, but not the plan.
+ * PURPOSE: To parse and validate the plan file.
+ *          The parser validates the FILE, but not the plan.
  *          If the plan is not logical, i.e it pertains to a non-existant
- *          property, it will be dealt with by the simulation.
+ *          property, it will be dealt with by the simulation. The behaviour of a plan
+ *          is defined here.
  * AUTHOR:  Luke Healy
  * DATE:    1/10/16
  */
@@ -21,7 +21,6 @@ import simulation.controller.exceptions.InvalidFileException;
 
 public class PlanFileParser implements Parser
 {
-
     @Override
     public void parseFile(ArrayList<String> planfile, FileData fileData) throws InvalidFileException
     {
@@ -65,7 +64,7 @@ public class PlanFileParser implements Parser
                     "Plan File: A plan is missing a year.");
             }
 
-            // Get the property name. Any non empty string is fine.
+            // Get the plan name. Any non empty string is fine.
             if(!parts[2].equals(""))
             {
                 property = parts[2];
@@ -77,19 +76,18 @@ public class PlanFileParser implements Parser
             }
 
             /**
-             * Do the type of plan last as this is where we decide on which
+             * Parse the type of plan last as this is where we decide on which
              * transactionBehaviour to give the plan.
              */
             if(!parts[1].equals(""))
             {
+                // Define transaction behaviour.
                 if(parts[1].equals("B"))
                 {
-                    // Define transaction behaviour.
                     plans.add(new Plan(year, property, new BuyTransaction()));
                 }
                 else if(parts[1].equals("S"))
                 {
-                    // Define transaction behaviour.
                     plans.add(new Plan(year, property, new SellTransaction()));
                 }
                 else
@@ -104,6 +102,7 @@ public class PlanFileParser implements Parser
                     "Plan File: An plan is missing a type.");
             }
         }
+        // Add the list of plans to the fileData object.
         fileData.setPlans(plans);
     }
 }

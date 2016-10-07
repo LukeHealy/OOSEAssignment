@@ -16,32 +16,31 @@ import java.io.FileNotFoundException;
 import simulation.model.*;
 import simulation.controller.exceptions.*;
 import simulation.view.Output;
-import simulation.observer.Observer;
+import simulation.observer.*;
 
-public class Simulation
+public class Simulation implements Subject
 {
     private int startYear;
     private int endYear;
     private Company primaryCompany;
     private List<Observer> observers;
 
-    /* Container of 3 containers, properties, plans and events.
+    /* Object of 3 containers, properties, plans and events.
      * They hold all the data read from the input files.
      * A container was used so that the parser
      * nominated by the factory is able to handle writing to any of
-     * the file data containers. Otherwise Simulation would have to know what 
+     * the file data containers. Otherwise readFile in FileIO would have to know what 
      * type of file it's reading and pass the appropriate container, defeating
      * the purpose of the parser factory. 
      * Also, This inherantly solves the issue
      * of not knowing which command line argument is which file because
-     * we don't care! The parser knows what to do.
+     * we don't care. The parser knows what to do.
      */
     private FileData fileData;
 
     /*
-     * Store hashmap of properties, even though there is already an arraylist.
-     * This is so that proprty names can easily be matched with properties
-     * for use thorughout the program.
+     * Store hashmap of properties, This is so that proprty names can easily 
+     * be matched with properties for use thorughout the program.
      */
     private HashMap<String,Property> properties;
 
@@ -49,7 +48,6 @@ public class Simulation
     {
         this.startYear = startYear;
         this.endYear = endYear;
-        // Init the ArrayLists.
         this.fileData = fileData;
 
         primaryCompany = null;
@@ -73,17 +71,19 @@ public class Simulation
     }
 
     /**
-     * loadData takes the three file names and loads their contents into
-     * the appropriate containers. If there is an issue with the files,
-     * it throws an exception up to main which will ensure the program
-     * quits safely.
+     * The simulation has all of the necessary information from the files etc.
+     * It doesn't yet know what to do with it however.
+     * loadData is used to take the objects stored in fileData fills in any gaps.
+     * This is done here because we can't do it while constructing the objects in
+     * fileData as we may not have all the needed information as we construct
+     * each object. Doing it here means we have all the needed information.
      */
     public void loadData() throws CouldNotLoadDataException
     {
         try
         {
             registerPrimaryCompany();
-            registerOwners();
+            registerOwnersInCompanies();
             registerPropertiesInCompanies();
             registerPropertiesInPlans();
             checkOwnershipSanity();
@@ -95,7 +95,10 @@ public class Simulation
         }
     }
 
-    public void doSimulation()
+    /**
+     * Does the actual simulation logic. For each year, do the appropriate actions.
+     */
+    public void doSimulation() throws SimulationLogicErrorException
     {
         Output.printHeading();
         ArrayList<Property> properties =  new ArrayList<Property>(
@@ -104,50 +107,59 @@ public class Simulation
         ArrayList<Plan> plans = fileData.getPlans();
         ArrayList<Company> companies = null;
 
-        for(int year = startYear; year <= endYear; year++)
+        try
         {
-            companies = new ArrayList<Company>();
+            for(int year = startYear; year <= endYear; year++)
+            {
+                companies = new ArrayList<Company>();
 
-            Company current;
+                Company current;
 
-            for(Property p : properties) // For each company
-            {
-                if((current = p.isCompany()) != null)
+                for(Property p : properties) // For each company
                 {
-                    companies.add(current);
+                    if((current = p.isCompany()) != null)
+                    {
+                        companies.add(current);
+                    }
+                }
+                // Update bank account according to profit
+                if(year > startYear)
+                {
+                    updateBankBalances(companies);
+                }
+                // Output year, company name and bank balance
+                Output.output(year, companies);
+                // Do events for this year
+                for(Event e : events)
+                {
+                    if(e.getYear() == year)
+                    {
+                        //System.out.println(e.toString());
+                        e.doEvent(this);
+                    }
+                }
+                // Do plans for this year
+                for(Plan pl : plans)
+                {
+                    if(pl.getYear() == year)
+                    {
+                        //System.out.println(pl.toString());
+                        pl.doTransaction();
+                        checkOwnershipSanity();
+                    }
                 }
             }
-            // Update bank account according to profit
-            if(year > startYear)
-            {
-                updateBankBalances(companies);
-            }
-            // Output year, company name and bank balance
-            Output.output(year, companies);
-            // Do events for this year
-            for(Event e : events)
-            {
-                if(e.getYear() == year)
-                {
-                    //System.out.println(e.toString());
-                    e.doEvent(this);
-                }
-            }
-            // Do plans for this year
-            for(Plan pl : plans)
-            {
-                if(pl.getYear() == year)
-                {
-                    //System.out.println(pl.toString());
-                    pl.doTransaction();
-                }
-            }
+            Output.printFormatLine();
         }
-        Output.output(endYear + 1, companies);            
-
-        System.out.println(Output.formatLine);
+        catch(BadOwnershipException e)
+        {
+            throw new SimulationLogicErrorException(e.getMessage());
+        }
     }
 
+    /**
+     * Used to update the bank balances of each company.
+     */
     private void updateBankBalances(ArrayList<Company> companies)
     {
         for(Company c : companies)
@@ -156,6 +168,9 @@ public class Simulation
         }
     }
 
+    /**
+     * Goes through each business unit and registers it as an observer.
+     */ 
     private void registerBusinessUnitObservers()
     {
         BusinessUnit current;
@@ -171,16 +186,13 @@ public class Simulation
     /**
      * Observers for wage changes.
      */
+    @Override
     public void attach(Observer observer)
     {
         this.observers.add(observer);
     }
- 
-    public void setWageChange(double wages)
-    {
-        notifyObservers(wages);
-    }
 
+    @Override
     public void notifyObservers(double wage)
     {
         for(Observer o : observers)
@@ -189,9 +201,12 @@ public class Simulation
         }
     }
 
-    public Company getPrimaryCompany()
+    /**
+     * Gives the observers the new wage value. Called by an event.
+     */ 
+    public void setWageChange(double wages)
     {
-        return primaryCompany;
+        notifyObservers(wages);
     }
 
     /**
@@ -202,7 +217,7 @@ public class Simulation
      * unnamed owners.
      * Could not load data will be caught in main.
      */
-    private void registerOwners() throws CouldNotLoadDataException
+    private void registerOwnersInCompanies() throws CouldNotLoadDataException
     {
         for(Property p : fileData.getProperties().values())
         {
@@ -234,6 +249,9 @@ public class Simulation
         }
     }
 
+    /**
+     * Gives each plan it's property object, based on it's propertyName.
+     */
     private void registerPropertiesInPlans(){
         for(Plan p : fileData.getPlans())
         {

@@ -1,6 +1,6 @@
 /***
- * NAME:    
- * PURPOSE: 
+ * NAME:    Parser
+ * PURPOSE: Interface to define the API for a file parser.
  * AUTHOR:  Luke Healy
  * DATE:    4/10/16
  */
@@ -13,7 +13,8 @@ import simulation.controller.exceptions.InvalidFileException;
 
 
 /***
- * File parser factory
+ * Goes through each line of the file and contructs the relevant objects
+ * with the data from the file. These objects are stored in fileData.
  */
 
 public interface Parser

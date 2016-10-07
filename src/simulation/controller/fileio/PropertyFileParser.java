@@ -1,7 +1,7 @@
 /***
  * NAME:    PropertyFileParser
- * PURPOSE: To parse and validate the property file. Also houses a 
- *          version of the populate method.
+ * PURPOSE: Parse and validate the property file. Stores the map of properties
+ *          in the fileData object.
  * AUTHOR:  Luke Healy
  * DATE:    30/9/16
  */
@@ -14,9 +14,7 @@ import simulation.controller.exceptions.InvalidFileException;
 import simulation.model.*;
 
 public class PropertyFileParser implements Parser
-{
-    private FileData fileData;
-    
+{    
     @Override
     public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException
     {
@@ -42,7 +40,7 @@ public class PropertyFileParser implements Parser
                     "Property file: A property is missing a name.");
             }
 
-            // Add the correct name if one exists.
+            // Add the owner name if one exists.
             if(!parts[2].equals(""))
             {
                 ownerName = parts[2];
@@ -100,15 +98,7 @@ public class PropertyFileParser implements Parser
                     "Property file: '" + parts[1] + "' is not a valid type. Use 'C' or 'B'.");
             }
         }
+        // Add the list of plans to the fileData object.
         fileData.setProperties(properties);
     }
 }
-
-
-
-
-
-
-
-
-

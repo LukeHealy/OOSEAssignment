@@ -1,24 +1,37 @@
+/***
+ * NAME:    Output
+ * PURPOSE: Used only to print things to the user.
+ * AUTHOR:  Luke Healy
+ * DATE:    3/10/16
+ */
+
 package simulation.view;
 
 import java.text.DecimalFormat;
 import java.util.*;
-
 import simulation.model.Company;
 
 public class Output
 {
     private static final DecimalFormat formatter = new DecimalFormat("#0.00"); 
-    public static final String formatLine = "+------+-----------------------+------------------+";
+    private static final String formatLine = "+------+-----------------------+------------------+";
 
+
+    /**
+     * Prints the heading block.
+     */
     public static void printHeading()
     {
-        System.out.println(formatLine);
+        printFormatLine();
         System.out.println("| Year | Company               | Bank Balance     |");
     }
 
+    /**
+     * Prints a years worth of output.
+     */
     public static void output(int year, ArrayList<Company> companies)
     {
-        System.out.println(formatLine);
+        printFormatLine();
         for(Company c : companies)
         {
             double balance = c.getBankBalance();
@@ -26,5 +39,13 @@ public class Output
                 "| %-5d| %-22s| $%-16s|\n", year, c.getName(), 
                 (balance > 0.0 ? formatter.format(balance) : "(" + formatter.format(balance) + ")") );
         }
+    }
+
+    /**
+     * Prints the sperarator line.
+     */
+    public static void printFormatLine()
+    {
+        System.out.println(formatLine);
     }
 }

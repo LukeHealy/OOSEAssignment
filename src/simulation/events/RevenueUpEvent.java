@@ -1,3 +1,10 @@
+/***
+ * NAME:    RevenueUpEvent
+ * PURPOSE: Event behaviour to increase the revenue of a business unit by 5%.
+ * AUTHOR:  Luke Healy
+ * DATE:    4/10/16
+ */
+
 package simulation.events;
 
 import simulation.controller.Simulation;
@@ -14,7 +21,10 @@ public class RevenueUpEvent implements Eventful
         this.propertyName = propertyName;
     }
 
-      @Override
+    /**
+     * Grabs the property object and sets it's revenue to 105% of itself.
+     */
+    @Override
     public void doEvent(Simulation sim) throws InvalidEventException
     {
         Property property = sim.resolveProperty(propertyName);

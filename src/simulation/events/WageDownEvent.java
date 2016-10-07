@@ -1,3 +1,10 @@
+/***
+ * NAME:    
+ * PURPOSE: 
+ * AUTHOR:  Luke Healy
+ * DATE:    
+ */
+
 package simulation.events;
 
 import simulation.controller.Simulation;

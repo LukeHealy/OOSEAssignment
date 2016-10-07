@@ -6,17 +6,17 @@
  */
 package simulation.controller.exceptions;
 
-public class SimulationLogicError extends Exception
+public class SimulationLogicErrorException extends Exception
 {
     /**
      * Standard exception constructor.
      */
-    public SimulationLogicError(String msg, Throwable cause)
+    public SimulationLogicErrorException(String msg, Throwable cause)
     {
         super(("Error in simulation logic: " + msg), cause);
     }
 
-    public SimulationLogicError(String msg)
+    public SimulationLogicErrorException(String msg)
     {
         super("Error in simulation logic: " + msg);
     }

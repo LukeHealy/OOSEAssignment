@@ -1,3 +1,10 @@
+/***
+ * NAME:    RevenueDownEvent
+ * PURPOSE: Reduces the revenue of a given BusinessUnit by 5%.
+ * AUTHOR:  Luke Healy
+ * DATE:    4/10/16
+ */
+
 package simulation.events;
 
 import simulation.controller.Simulation;
@@ -11,9 +18,13 @@ public class RevenueDownEvent implements Eventful
 
     public RevenueDownEvent(String propertyName)
     {
+        // Used add the correct property object at runtime.
         this.propertyName = propertyName;
     }
 
+    /**
+     * Grabs the property object and sets it's revenue to 95% of itself.
+     */
     @Override
     public void doEvent(Simulation sim) throws InvalidEventException
     {

@@ -1,3 +1,10 @@
+/***
+ * NAME:    
+ * PURPOSE: 
+ * AUTHOR:  Luke Healy
+ * DATE:    
+ */
+
 package simulation.model;
 import simulation.controller.exceptions.InvalidPlanException;
 

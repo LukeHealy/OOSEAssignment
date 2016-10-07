@@ -1,6 +1,6 @@
 /***
  * NAME:    FileIO
- * PURPOSE: Contain all file input and output functionality.
+ * PURPOSE: Contains file reading functionality and the Parser factory.
  * AUTHOR:  Luke Healy
  * DATE:    30/9/16
  */
@@ -21,9 +21,9 @@ public class FileIO
         this.fileData = fileData;
     }
     /**
-     * Read any .csv file and return its contents as an arraylist of lines.
+     * Read any csv file and return its contents as an arraylist of lines.
      */
-    private ArrayList<String> readCSVFile(String path) throws FileNotFoundException, CouldNotLoadDataException
+    private List<String> readCSVFile(String path) throws FileNotFoundException, CouldNotLoadDataException
     {
         String line;
         ArrayList<String> file = new ArrayList<String>();
@@ -42,7 +42,7 @@ public class FileIO
 
             fis.close();
         }
-        // Some issue with the file so close it and tell the user.
+        // Some issue with the file io so close the file.
         catch(IOException e2)
         {
             try
@@ -80,7 +80,7 @@ public class FileIO
     }
 
     /**
-     * makeParser is the parse factory used by loadData in Simulation.
+     * makeParser is the Parser factory used by readFile.
      * It looks at the file header and returns the appropriate file parser.
      * If the header is not recognizable, throw an exception.
      */
@@ -107,6 +107,13 @@ public class FileIO
         return parser;
     }
 
+    /**
+     * Takes an array of the file names and reads each file. 
+     * It then gets the appropriate parser and passes the read csv to it.
+     * Also strips the header from the file as we no longer need it.
+     * The file io calls all happen three times, once for each file.
+     * The order of the files does not matter.
+     */ 
     public void readFiles(String[] args) throws CouldNotLoadDataException
     {
         try
@@ -117,10 +124,13 @@ public class FileIO
 
             for(int i = 0; i < 3; i++)
             {
-                file = readCSVFile(args[i]);
+                // Read file.
+                file = (ArrayList<String>)readCSVFile(args[i]);
+                // Get the parser according to the header.
                 parser = makeParser(file.get(0));
                 // We can get rid of the header now.
                 file.remove(0);
+                // Parse the file.
                 parser.parseFile(file, fileData);
             }
         }

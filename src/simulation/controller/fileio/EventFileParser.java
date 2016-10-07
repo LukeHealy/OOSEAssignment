@@ -1,6 +1,6 @@
 /***
  * NAME:    
- * PURPOSE: 
+ * PURPOSE: Parse, validate and store the events file.
  * AUTHOR:  Luke Healy
  * DATE:    4/10/16
  */
@@ -14,13 +14,8 @@ import simulation.model.Event;
 import simulation.events.*;
 import simulation.controller.Simulation;
 
-
-
 public class EventFileParser implements Parser
 {
-    /**
-     * 
-     */
     @Override
     public void parseFile(ArrayList<String> eventFile, FileData fileData) throws InvalidFileException
     {   
@@ -132,6 +127,7 @@ public class EventFileParser implements Parser
             }
             events.add(event);
         }
+        // Add events to fileData.
         fileData.setEvents(events);
     }
 }
