@@ -3,7 +3,7 @@ Object Oriented Software Engineering Assignment, 2016, Semester 2 Curtin Univers
 
 ## Purpose
 
-This program simulates 0 or more businnes decisions, made in a given economic context, for the purpose of training a company director.
+This program simulates 0 or more bussines decisions, made in a given economic context, for the purpose of training a company director.
 
 The point of this assignment was to implement a system design, given a complex specification, and make good use of OO design patterns and general practices.
 
