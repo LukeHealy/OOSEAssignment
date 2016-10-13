@@ -60,6 +60,9 @@ public class Plan
         }
     }
 
+    /**
+     * Used to give a plan a reference to the primary company.
+     */
     public void registerPrimaryCompany(Company primary)
     {
         if(this.primaryCompany == null)

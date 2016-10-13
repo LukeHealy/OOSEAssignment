@@ -48,6 +48,7 @@ public abstract class Property
         }
     }
 
+    // Getters and Setters.
     public String getOwnerName()
     {
         return ownerName;
@@ -76,6 +77,11 @@ public abstract class Property
     {
         return name;
     }
+
+    /** 
+     * These methods will be impleented for the purpose of telling
+     * business units and companies apart in a clean way.
+     */
     public abstract BusinessUnit isBusinessUnit();
     public abstract Company isCompany();
 

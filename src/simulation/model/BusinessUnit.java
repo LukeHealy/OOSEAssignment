@@ -1,6 +1,7 @@
 /***
  * NAME:    BusinessUnit
- * PURPOSE: Stores a BusinessUnit.
+ * PURPOSE: Stores a BusinessUnit. Each business unit is also an observer
+            So that wages can be updated.
  * AUTHOR:  Luke Healy
  * DATE:    30/9/16
  */
@@ -26,6 +27,10 @@ public class BusinessUnit extends Property implements Observer
         this.wages = wages;
     }
 
+    /**
+     * The simulation calls this an passes itself. The business unit
+     * then calls attach in the simulation to attach itself as an observer.
+     */
     public void attachSubject(Simulation sim)
     {
         sim.attach(this);
@@ -54,6 +59,9 @@ public class BusinessUnit extends Property implements Observer
         return ("Business unit: " + name + ", " + ownerName + ", " + monetaryValue + ", " + wages + ", " + revenue);
     }
 
+    /**
+     * Observer action is to update the wages.
+     */
     @Override
     public void update(double change)
     {
@@ -64,6 +72,7 @@ public class BusinessUnit extends Property implements Observer
     {
         return this;
     }
+
     public Company isCompany()
     {
         return null;

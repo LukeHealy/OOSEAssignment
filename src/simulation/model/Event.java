@@ -9,6 +9,7 @@ package simulation.model;
 import simulation.events.Eventful;
 import simulation.controller.Simulation;
 import simulation.controller.exceptions.InvalidEventException;
+import simulation.controller.exceptions.SimulationLogicErrorException;
 
 public class Event
 {
@@ -24,23 +25,29 @@ public class Event
         this.eventBehaviour = eventBehaviour;
     }
 
-    public int getYear()
-    {
-        return year;
-    }
-
     public Event(int year, String propertyName)
     {
         this.propertyName = propertyName;
         this.year = year;
     }
 
+    public int getYear()
+    {
+        return year;
+    }
+
+    /**
+     * Used to define the behavious of the event.
+     */
     public void setEventBehaviour(Eventful eventBehaviour)
     {
         this.eventBehaviour = eventBehaviour;
     }
 
-    public void doEvent(Simulation sim)
+    /**
+     * Do the event.
+     */
+    public void doEvent(Simulation sim) throws SimulationLogicErrorException
     {
         try
         {
@@ -48,10 +55,11 @@ public class Event
         }
         catch(InvalidEventException e)
         {
-            System.out.println(e.getMessage());
+            throw new SimulationLogicErrorException(e.getMessage());
         }
     }
 
+    // Setters
     public void setProperty(Property property)
     {
         this.property = property;
