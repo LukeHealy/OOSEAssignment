@@ -1,6 +1,7 @@
 /***
  * NAME:    
- * PURPOSE: 
+ * PURPOSE: Super class of a wage event.
+ *          This is a EventBehaviour which belongs to an event.
  * AUTHOR:  Luke Healy
  * DATE:    
  */

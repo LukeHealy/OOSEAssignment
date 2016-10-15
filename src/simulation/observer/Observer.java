@@ -1,8 +1,8 @@
 /***
- * NAME:    
- * PURPOSE: 
+ * NAME:    Observer
+ * PURPOSE: Basic observer interface used to update wages.
  * AUTHOR:  Luke Healy
- * DATE:    
+ * DATE:    4/10
  */
 
 package simulation.observer;

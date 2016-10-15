@@ -1,8 +1,8 @@
 /***
- * NAME:    
- * PURPOSE: 
+ * NAME:    Transaction
+ * PURPOSE: Interface for a transaction behaviour.
  * AUTHOR:  Luke Healy
- * DATE:    
+ * DATE:    2/10
  */
 
 package simulation.model;

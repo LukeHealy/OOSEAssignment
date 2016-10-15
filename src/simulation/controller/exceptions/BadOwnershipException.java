@@ -1,6 +1,6 @@
 /***
- * NAME:    
- * PURPOSE: 
+ * NAME:    BadOwnershipException
+ * PURPOSE: Thrown when an impossible ownership circle is created.
  * AUTHOR:  Luke Healy
  * DATE:    30/9/16
  */

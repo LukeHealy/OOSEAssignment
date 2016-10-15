@@ -1,8 +1,9 @@
 /***
- * NAME:    
- * PURPOSE: 
+ * NAME:    WageDownEvent
+ * PURPOSE: Reduces the wages of a business unit by 5%.
+ *          This is a EventBehaviour which belongs to an event.
  * AUTHOR:  Luke Healy
- * DATE:    
+ * DATE:    2/10
  */
 
 package simulation.events;

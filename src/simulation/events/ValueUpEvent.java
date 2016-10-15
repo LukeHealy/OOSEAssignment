@@ -1,6 +1,7 @@
 /***
  * NAME:    
- * PURPOSE: 
+ * PURPOSE: Increases the value of a property by 5%. 
+ *          This is a transaction behaviour which belongs to a Plan.
  * AUTHOR:  Luke Healy
  * DATE:    
  */
