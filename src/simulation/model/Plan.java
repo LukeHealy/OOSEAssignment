@@ -48,16 +48,9 @@ public class Plan
     }
 
     // Do the thing.
-    public void doTransaction()
+    public void doTransaction() throws InvalidPlanException
     {
-        try
-        {
-            transactionBehaviour.transact(primaryCompany, property);
-        }
-        catch(InvalidPlanException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        transactionBehaviour.transact(primaryCompany, property);
     }
 
     /**

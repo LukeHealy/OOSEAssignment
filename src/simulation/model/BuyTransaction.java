@@ -16,10 +16,17 @@ public class BuyTransaction implements Transaction
     public void transact(Company primaryCompany, Property property) throws InvalidPlanException
     {
         double sellingPrice = property.getMonetaryValue();
+        Company previousOwner = property.getOwner();
 
-        // If owned by a known company.
-        Company previousOwner;
-        if((previousOwner = property.getOwner()) != null)
+        // Ensure we don't alrady own it.
+        if(previousOwner == primaryCompany)
+        {
+            throw new InvalidPlanException(
+                "Cannot buy a company you already own.");
+        }
+        
+        // If owned by a known company;
+        if(previousOwner != null)
         {
             // Remove from that companies set of property.
             previousOwner.removeProperty(property);

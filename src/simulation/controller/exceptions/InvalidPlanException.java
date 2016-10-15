@@ -18,6 +18,6 @@ public class InvalidPlanException extends Exception
 
     public InvalidPlanException(String msg)
     {
-        super("Invalid buy or sell plan " + msg);
+        super("Invalid buy or sell plan: " + msg);
     }
 }

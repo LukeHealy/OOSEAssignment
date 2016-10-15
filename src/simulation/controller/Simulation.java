@@ -143,7 +143,6 @@ public class Simulation implements Subject
                 {
                     if(pl.getYear() == year)
                     {
-                        //System.out.println(pl.toString());
                         pl.doTransaction();
                         checkOwnershipSanity();
                     }
@@ -151,7 +150,7 @@ public class Simulation implements Subject
             }
             Output.printFormatLine();
         }
-        catch(BadOwnershipException e)
+        catch(BadOwnershipException | InvalidPlanException e)
         {
             throw new SimulationLogicErrorException(e.getMessage());
         }
@@ -302,7 +301,7 @@ public class Simulation implements Subject
         {
             seenOwners = new HashSet<Property>();
 
-            current = p;
+            current = p.getOwner();
             while(current != null)
             {
 
@@ -329,6 +328,12 @@ public class Simulation implements Subject
          * a company is returned, this must be the first one, therefore the primary.
          */
         while((primaryCompany = p.next().isCompany()) == null );
+
+        // Register primary company with each plan.
+        for(Plan pl : fileData.getPlans())
+        {
+            pl.registerPrimaryCompany(primaryCompany);
+        }
     }
 }
 
