@@ -67,7 +67,7 @@ public class PropertyFileParser implements Parser
             // to the business unit and add it.
             if(parts[1].equals("C"))
             {
-                properties.put(name, new Company(ownerName, name, monetaryValue));
+                properties.put(name, new Company(ownerName, name, monetaryValue, new BankAccount(name, monetaryValue)));
             }
             else if(parts[1].equals("B"))
             {

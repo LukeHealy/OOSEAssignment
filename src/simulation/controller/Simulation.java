@@ -46,14 +46,17 @@ public class Simulation implements Subject
      */
     private Map<String,Property> properties;
 
-    public Simulation(FileData fileData, int startYear, int endYear)
+    public Simulation(FileData fileData, int startYear, int endYear, Company primaryCompany)
     {
         this.startYear = startYear;
         this.endYear = endYear;
         this.fileData = fileData;
+        this.primaryCompany = primaryCompany;
 
-        primaryCompany = null;
-
+        /* 
+         * Can't inject this dependancy as it is populated later by
+         * the observers themselves.
+         */
         observers = new ArrayList<Observer>();
     }
 
@@ -84,7 +87,6 @@ public class Simulation implements Subject
     {
         try
         {
-            registerPrimaryCompany();
             registerOwnersInCompanies();
             registerPropertiesInCompanies();
             registerPropertiesInPlans();
@@ -323,27 +325,6 @@ public class Simulation implements Subject
                 }
                 current = current.getOwner();
             }
-        }
-    }
-
-    /**
-     * Sets the primary company to the first one in the hashmap (which
-     * will be the first one in the file).
-     */
-    private void registerPrimaryCompany()
-    {
-        Iterator<Property> p = fileData.getProperties().values().iterator();
-
-        /*
-         * isCompany returns null until it gets a company. Do the loop until
-         * a company is returned, this must be the first one, therefore the primary.
-         */
-        while((primaryCompany = p.next().isCompany()) == null );
-
-        // Register primary company with each plan.
-        for(Plan pl : fileData.getPlans())
-        {
-            pl.registerPrimaryCompany(primaryCompany);
         }
     }
 }

@@ -14,6 +14,9 @@ import java.util.*;
 import java.io.FileNotFoundException;
 
 import simulation.model.FileData;
+import simulation.model.Company;
+import simulation.model.Plan;
+import simulation.model.Property;
 import simulation.controller.fileio.*;
 import simulation.controller.exceptions.CouldNotLoadDataException;
 import simulation.controller.exceptions.SimulationLogicErrorException;
@@ -46,8 +49,12 @@ public class Controller
             // This provides elements 0, 1 and 2.
             fileIO.readFiles(Arrays.copyOfRange(args, 0, 3));
 
+            // Register primary comoany in plans and get a reference
+            // to give to the simulation.
+            Company primary = registerPrimaryCompany(fileData);
+
             // Create simulation.
-            Simulation sim = new Simulation(fileData, startYear, endYear);
+            Simulation sim = new Simulation(fileData, startYear, endYear, primary);
 
             // Init and start simulation.
             sim.loadData();
@@ -75,5 +82,37 @@ public class Controller
         
         // Everything went fine.
         System.exit(0);
+    }
+    
+    /**
+     * Sets the primary company to the first one in the hashmap (which
+     * will be the first one in the file). Throws CouldNotLoadDataException
+     * if it can't find a company in the set of properties.
+     */
+    private static Company registerPrimaryCompany(FileData fileData) throws CouldNotLoadDataException
+    {
+        Iterator<Property> p = fileData.getProperties().values().iterator();
+
+        /*
+         * isCompany returns null until it gets a company. Do the loop until
+         * a company is returned, this must be the first one, therefore the primary.
+         */
+        Company primaryCompany = null;
+        try
+        {
+            while((primaryCompany = p.next().isCompany()) == null );
+
+            // Register primary company with each plan.
+            for(Plan pl : fileData.getPlans())
+            {
+                pl.registerPrimaryCompany(primaryCompany);
+            }
+        }
+        catch(NoSuchElementException e)
+        {
+            throw new CouldNotLoadDataException(
+                "Must specify at least 1 Company.");
+        }
+        return primaryCompany;
     }
 }

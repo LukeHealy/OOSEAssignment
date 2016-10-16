@@ -11,8 +11,6 @@ import simulation.controller.exceptions.InvalidPlanException;
 
 public class SellTransaction implements Transaction
 {
-    public SellTransaction(){}
-
     public void transact(Company primaryCompany, Property property) throws InvalidPlanException
     {
         try

@@ -17,14 +17,17 @@ public class Company extends Property
     // Set of owned properties.
     private Set<Property> properties;
 
-    public Company(String ownerName, String name, double monetaryValue)
+    public Company(String ownerName, String name, double monetaryValue, BankAccount bank)
     {
         super(ownerName, monetaryValue);
         this.name = name;
-        properties = new HashSet<Property>();
+        this.bank = bank;
 
-        // The single bank account.
-        bank = new BankAccount(this.name, monetaryValue);
+        /*
+         * Can't inject this dependancy as it is populated
+         * later by other objects that may not exist yet.
+         */
+        properties = new HashSet<Property>();
         properties.add(bank);
     }
 

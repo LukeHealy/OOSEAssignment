@@ -11,8 +11,6 @@ import simulation.controller.exceptions.InvalidPlanException;
 
 public class BuyTransaction implements Transaction
 {
-    public BuyTransaction(){}
-
     public void transact(Company primaryCompany, Property property) throws InvalidPlanException
     {
         double sellingPrice = property.getMonetaryValue();
