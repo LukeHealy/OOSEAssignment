@@ -16,6 +16,7 @@ The following parts of my solution use polymorphism.
 ## Testability
 
 * **Parser Factory.** The use of a ***Factory*** for parsing the files means that only the `Parser` implementations needed to be tested. It wasn't necessary to test, or even implement any logic related to figuring out when to expect a certain file, or what to do when files are given in the wrong order. All of this is inherantly handled by the factory, which is a trivial `switch` statement.
+* **Dependancy Injection.** Used it like innit?
 * 
 
 ## Alternative Design Choices
