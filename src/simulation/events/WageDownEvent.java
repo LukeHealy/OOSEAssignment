@@ -10,14 +10,8 @@ package simulation.events;
 
 import simulation.controller.Simulation;
 
-public class WageDownEvent extends WageEvent
+public class WageDownEvent implements Eventful
 {
-    public WageDownEvent()
-    {
-        super();
-    }
-
-    @Override
     public void doEvent(Simulation sim)
     {
         sim.setWageChange(0.95);
