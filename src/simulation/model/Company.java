@@ -7,6 +7,7 @@
 package simulation.model;
 
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Iterator;
 
 public class Company extends Property
@@ -14,7 +15,7 @@ public class Company extends Property
     private BankAccount bank;
 
     // Set of owned properties.
-    private HashSet<Property> properties;
+    private Set<Property> properties;
 
     public Company(String ownerName, String name, double monetaryValue)
     {
@@ -56,6 +57,7 @@ public class Company extends Property
 
     public void removeProperty(Property prop)
     {
+        System.out.println(prop);
         prop.setOwner(null);
         if(!properties.remove(prop)) //Not in the set
         {

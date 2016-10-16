@@ -19,5 +19,5 @@ import simulation.controller.exceptions.InvalidFileException;
 
 public interface Parser
 {
-    public void parseFile(ArrayList<String> file, FileData fileData) throws InvalidFileException;
+    public void parseFile(List<String> file, FileData fileData) throws InvalidFileException;
 }

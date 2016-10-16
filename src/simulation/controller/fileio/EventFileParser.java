@@ -1,5 +1,5 @@
 /***
- * NAME:    
+ * NAME:    EventFileParser
  * PURPOSE: Parse, validate and store the events file.
  * AUTHOR:  Luke Healy
  * DATE:    4/10/16
@@ -16,14 +16,17 @@ import simulation.controller.Simulation;
 
 public class EventFileParser implements Parser
 {
+    /**
+     * 
+     */
     @Override
-    public void parseFile(ArrayList<String> eventFile, FileData fileData) throws InvalidFileException
+    public void parseFile(List<String> eventFile, FileData fileData) throws InvalidFileException
     {   
         int year;
         int previousYear = 0;
         String property;
 
-        ArrayList<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<Event>();
 
         for(String p : eventFile)
         {

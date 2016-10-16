@@ -9,7 +9,9 @@ package simulation.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Iterator;
 
 import java.io.FileNotFoundException;
@@ -42,7 +44,7 @@ public class Simulation implements Subject
      * Store hashmap of properties, This is so that proprty names can easily 
      * be matched with properties for use thorughout the program.
      */
-    private HashMap<String,Property> properties;
+    private Map<String,Property> properties;
 
     public Simulation(FileData fileData, int startYear, int endYear)
     {
@@ -89,7 +91,7 @@ public class Simulation implements Subject
             checkOwnershipSanity();
             registerBusinessUnitObservers();
         }
-        catch(BadOwnershipException e)
+        catch(BadOwnershipException | InvalidPlanException e)
         {
             throw new CouldNotLoadDataException(e.getMessage(), e);
         }
@@ -101,11 +103,11 @@ public class Simulation implements Subject
     public void doSimulation() throws SimulationLogicErrorException
     {
         Output.printHeading();
-        ArrayList<Property> properties =  new ArrayList<Property>(
+        List<Property> properties =  new ArrayList<Property>(
             fileData.getProperties().values());
-        ArrayList<Event> events = fileData.getEvents();
-        ArrayList<Plan> plans = fileData.getPlans();
-        ArrayList<Company> companies = null;
+        List<Event> events = fileData.getEvents();
+        List<Plan> plans = fileData.getPlans();
+        List<Company> companies = null;
 
         try
         {
@@ -159,7 +161,7 @@ public class Simulation implements Subject
     /**
      * Used to update the bank balances of each company.
      */
-    private void updateBankBalances(ArrayList<Company> companies)
+    private void updateBankBalances(List<Company> companies)
     {
         for(Company c : companies)
         {
@@ -251,10 +253,19 @@ public class Simulation implements Subject
     /**
      * Gives each plan it's property object, based on it's propertyName.
      */
-    private void registerPropertiesInPlans(){
+    private void registerPropertiesInPlans() throws InvalidPlanException{
         for(Plan p : fileData.getPlans())
         {
-            p.setProperty(resolveProperty(p.getPropertyName()));
+            Property current;
+            if((current = resolveProperty(p.getPropertyName())) != null)
+            {
+                p.setProperty(current);
+            }
+            else
+            {
+                throw new InvalidPlanException(
+                    "A plan involves a property that doesn't exist.");
+            }
         }
     }
 
@@ -292,9 +303,9 @@ public class Simulation implements Subject
      */
     private void checkOwnershipSanity() throws BadOwnershipException
     {
-        ArrayList<Property> properties =  new ArrayList<Property>(
+        List<Property> properties =  new ArrayList<Property>(
             fileData.getProperties().values());
-        HashSet<Property> seenOwners;
+        Set<Property> seenOwners;
         Property current;
 
         for(Property p : properties)

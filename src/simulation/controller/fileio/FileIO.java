@@ -26,7 +26,7 @@ public class FileIO
     private List<String> readCSVFile(String path) throws FileNotFoundException, CouldNotLoadDataException
     {
         String line;
-        ArrayList<String> file = new ArrayList<String>();
+        List<String> file = new ArrayList<String>();
         FileInputStream fis = null;
 
         try
@@ -119,13 +119,13 @@ public class FileIO
         try
         {
 
-            ArrayList<String> file;
+            List<String> file;
             Parser parser;
 
             for(int i = 0; i < 3; i++)
             {
                 // Read file.
-                file = (ArrayList<String>)readCSVFile(args[i]);
+                file = readCSVFile(args[i]);
                 // Get the parser according to the header.
                 parser = makeParser(file.get(0));
                 // We can get rid of the header now.

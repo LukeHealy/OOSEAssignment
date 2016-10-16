@@ -29,7 +29,7 @@ public class Output
     /**
      * Prints a years worth of output.
      */
-    public static void output(int year, ArrayList<Company> companies)
+    public static void output(int year, List<Company> companies)
     {
         printFormatLine();
         for(Company c : companies)

@@ -22,13 +22,13 @@ import simulation.controller.exceptions.InvalidFileException;
 public class PlanFileParser implements Parser
 {
     @Override
-    public void parseFile(ArrayList<String> planfile, FileData fileData) throws InvalidFileException
+    public void parseFile(List<String> planfile, FileData fileData) throws InvalidFileException
     {
         int year;
         int previousYear = 0;
         String property;
 
-        ArrayList<Plan> plans = new ArrayList<Plan>();
+        List<Plan> plans = new ArrayList<Plan>();
 
         for(String p : planfile)
         {

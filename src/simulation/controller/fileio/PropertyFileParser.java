@@ -8,7 +8,9 @@
 package simulation.controller.fileio;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
+import java.util.Map;
 import simulation.model.FileData;
 import simulation.controller.exceptions.InvalidFileException;
 import simulation.model.*;
@@ -16,9 +18,9 @@ import simulation.model.*;
 public class PropertyFileParser implements Parser
 {    
     @Override
-    public void parseFile(ArrayList<String> propertyString, FileData fileData) throws InvalidFileException
+    public void parseFile(List<String> propertyString, FileData fileData) throws InvalidFileException
     {
-        HashMap<String,Property> properties = new HashMap<String,Property>();
+        Map<String,Property> properties = new HashMap<String,Property>();
 
         String ownerName;
         String name;

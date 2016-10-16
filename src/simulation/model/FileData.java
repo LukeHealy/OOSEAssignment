@@ -11,14 +11,17 @@
 
 package simulation.model;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class FileData
 {
     // Properties are mapped by name.
-    private HashMap<String,Property> properties;
-    private ArrayList<Plan> plans;
-    private ArrayList<Event> events;
+    private Map<String,Property> properties;
+    private List<Plan> plans;
+    private List<Event> events;
 
     public FileData()
     {
@@ -28,32 +31,32 @@ public class FileData
     }
 
     // Getters and Setters
-    public HashMap<String,Property> getProperties()
+    public Map<String,Property> getProperties()
     {
         return properties;
     }
 
-    public ArrayList<Plan> getPlans()
+    public List<Plan> getPlans()
     {
         return plans;
     }
 
-    public ArrayList<Event> getEvents()
+    public List<Event> getEvents()
     {
         return events;
     }
 
-    public void setProperties(HashMap<String,Property> properties)
+    public void setProperties(Map<String,Property> properties)
     {
         this.properties = properties;
     }
 
-    public void setPlans(ArrayList<Plan> plans)
+    public void setPlans(List<Plan> plans)
     {
         this.plans = plans;
     }
 
-    public void setEvents(ArrayList<Event> events)
+    public void setEvents(List<Event> events)
     {
         this.events = events;
     }
