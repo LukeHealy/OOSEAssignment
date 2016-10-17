@@ -32,11 +32,6 @@ public class EventFileParser implements Parser
         {
             Event event;
 
-            if(p.equals(""))
-            {
-                System.out.println("empty");
-            }
-
             String[] parts = p.split(",", -1); 
 
             // Get year.

@@ -29,4 +29,3 @@ This program takes no user input, except for the command line arguments discusse
 ##Output
 
 The expected output for this program is a table of the year, each company's name and it's bank balance, for each year of the simulation. For example:
-
