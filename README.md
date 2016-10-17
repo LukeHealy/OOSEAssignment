@@ -30,4 +30,4 @@ This program takes no user input, except for the command line arguments discusse
 
 The expected output for this program is a table of the year, each company's name and it's bank balance, for each year of the simulation. For example:
 
-![Figure 1: Output](/Users/luke/Uni/OOSE/OOSEAssignment/resources/output.png)
+![Figure 1: Output](resources/output.png)
