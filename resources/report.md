@@ -17,7 +17,7 @@ The following parts of my solution use polymorphism.
 
 * **Parser Factory.** The use of a ***Factory*** for parsing the files means that only the `Parser` implementations needed to be tested. It wasn't necessary to test, or even implement any logic related to figuring out when to expect a certain file, or what to do when files are given in the wrong order. All of this is inherantly handled by the factory, which is a trivial `switch` statement.
 * **Dependancy Injection.** Used it like innit?
-* 
+* **Composite Company.** The `Company` objects are stored using the ***Composite*** pattern, that is, a given `Company` belongs to another `Company` and so on (with the root `Company` being the primary). This comes into play when using the `calcProfit()` method. It will recursively call `calcProfit()` on any `Company` it owns, which will do the same. This recursive nature, which has only one base case (when the list of `Property` objects owned, is iterated over entirely), means that `calcProfit()` only needed to be tested for one `Company`, one `BankAccount` and one `BusinessUnit`. The reason that we can garuantee the code works, is because *same* code is being executed, no matetr how many levels of recursion, or number `Company` objects.
 
 ## Alternative Design Choices
 

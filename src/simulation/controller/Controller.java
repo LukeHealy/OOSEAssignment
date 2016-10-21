@@ -20,6 +20,7 @@ import simulation.model.Property;
 import simulation.controller.fileio.*;
 import simulation.controller.exceptions.CouldNotLoadDataException;
 import simulation.controller.exceptions.SimulationLogicErrorException;
+import simulation.view.Output;
 
 public class Controller
 {
@@ -53,8 +54,10 @@ public class Controller
             // to give to the simulation.
             Company primary = registerPrimaryCompany(fileData);
 
+            // Make the view.
+            Output out = new Output();
             // Create simulation.
-            Simulation sim = new Simulation(fileData, startYear, endYear, primary);
+            Simulation sim = new Simulation(fileData, startYear, endYear, primary, out);
 
             // Init and start simulation.
             sim.loadData();

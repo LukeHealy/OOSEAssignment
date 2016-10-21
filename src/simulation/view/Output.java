@@ -13,14 +13,14 @@ import simulation.model.Company;
 
 public class Output
 {
-    private static final DecimalFormat formatter = new DecimalFormat("#0.00"); 
-    private static final String formatLine = "+------+-----------------------+------------------+";
+    private final DecimalFormat formatter = new DecimalFormat("#0.00"); 
+    private final String formatLine = "+------+-----------------------+------------------+";
 
 
     /**
      * Prints the heading block.
      */
-    public static void printHeading()
+    public void printHeading()
     {
         printFormatLine();
         System.out.println("| Year | Company               | Bank Balance     |");
@@ -29,7 +29,7 @@ public class Output
     /**
      * Prints a years worth of output.
      */
-    public static void output(int year, List<Company> companies)
+    public void output(int year, List<Company> companies)
     {
         printFormatLine();
         for(Company c : companies)
@@ -44,7 +44,7 @@ public class Output
     /**
      * Prints the sperarator line.
      */
-    public static void printFormatLine()
+    public void printFormatLine()
     {
         System.out.println(formatLine);
     }

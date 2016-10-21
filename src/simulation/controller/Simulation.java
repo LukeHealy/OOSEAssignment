@@ -26,6 +26,7 @@ public class Simulation implements Subject
     private int endYear;
     private Company primaryCompany;
     private List<Observer> observers;
+    private Output out;
 
     /* Object of 3 containers, properties, plans and events.
      * They hold all the data read from the input files.
@@ -46,12 +47,13 @@ public class Simulation implements Subject
      */
     private Map<String,Property> properties;
 
-    public Simulation(FileData fileData, int startYear, int endYear, Company primaryCompany)
+    public Simulation(FileData fileData, int startYear, int endYear, Company primaryCompany, Output out)
     {
         this.startYear = startYear;
         this.endYear = endYear;
         this.fileData = fileData;
         this.primaryCompany = primaryCompany;
+        this.out = out;
 
         /* 
          * Can't inject this dependancy as it is populated later by
@@ -104,7 +106,7 @@ public class Simulation implements Subject
      */
     public void doSimulation() throws SimulationLogicErrorException
     {
-        Output.printHeading();
+        out.printHeading();
         List<Property> properties =  new ArrayList<Property>(
             fileData.getProperties().values());
         List<Event> events = fileData.getEvents();
@@ -132,7 +134,7 @@ public class Simulation implements Subject
                     updateBankBalances(companies);
                 }
                 // Output year, company name and bank balance
-                Output.output(year, companies);
+                out.output(year, companies);
                 // Do events for this year
                 for(Event e : events)
                 {
@@ -152,7 +154,7 @@ public class Simulation implements Subject
                     }
                 }
             }
-            Output.printFormatLine();
+            out.printFormatLine();
         }
         catch(BadOwnershipException | InvalidPlanException e)
         {
